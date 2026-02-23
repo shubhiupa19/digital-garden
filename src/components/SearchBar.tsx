@@ -26,7 +26,9 @@ export default function SearchBar() {
     fetch("/search-index.json")
       .then((r) => r.json())
       .then(setIndex)
-      .catch(() => {});
+      .catch(() => {
+        console.error("Failed to load search index");
+      });
   }, []);
 
   const search = useCallback(
@@ -85,6 +87,7 @@ export default function SearchBar() {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -111,8 +114,9 @@ export default function SearchBar() {
               setIsOpen(false);
             }}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary"
+            aria-label="Clear search"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>

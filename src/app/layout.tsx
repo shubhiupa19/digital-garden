@@ -30,6 +30,20 @@ export const metadata: Metadata = {
   },
   description:
     "A personal digital garden exploring ideas in crypto, psychology, philosophy, and technology. Learning in public.",
+  openGraph: {
+    title: "Digital Garden",
+    description:
+      "A personal digital garden exploring ideas in crypto, psychology, philosophy, and technology. Learning in public.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Digital Garden",
+  },
+  twitter: {
+    card: "summary",
+    title: "Digital Garden",
+    description:
+      "A personal digital garden exploring ideas in crypto, psychology, philosophy, and technology. Learning in public.",
+  },
 };
 
 export default function RootLayout({
