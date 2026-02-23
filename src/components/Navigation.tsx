@@ -28,7 +28,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-14">
           <Link
             href="/"
-            className="text-text-primary font-semibold tracking-tight text-lg"
+            className="text-text-primary font-semibold tracking-wide text-lg"
           >
             🪴   shubhi's digital garden
           </Link>
