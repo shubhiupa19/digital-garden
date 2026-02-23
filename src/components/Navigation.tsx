@@ -30,7 +30,7 @@ export default function Navigation() {
             href="/"
             className="text-text-primary font-semibold tracking-tight text-lg"
           >
-            🪴  shubhi's digital garden
+            🪴   shubhi's digital garden
           </Link>
 
           {/* Desktop nav */}
