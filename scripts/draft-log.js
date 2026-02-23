@@ -133,10 +133,10 @@ function buildDraft(newNotes, updatedNotes, today) {
     }
   }
 
-  // Reflection prompts
-  lines.push("<!-- What surprised you? What connected that you didn't expect? -->");
+  // Reflection prompts (JSX comments for MDX compatibility)
+  lines.push("{/* What surprised you? What connected that you didn't expect? */}");
   lines.push("");
-  lines.push("<!-- What are you still unsure about? -->");
+  lines.push("{/* What are you still unsure about? */}");
   lines.push("");
 
   return lines.join("\n");
