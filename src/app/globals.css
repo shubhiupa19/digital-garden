@@ -1,26 +1,133 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-background: #0a0f1e;
+  --color-surface: #111827;
+  --color-surface-hover: #1a2236;
+  --color-border: #1e293b;
+  --color-border-hover: #334155;
+  --color-text-primary: #e5e7eb;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Topic colors */
+  --color-topic-crypto: #22d3ee;
+  --color-topic-psychology: #a78bfa;
+  --color-topic-philosophy: #fbbf24;
+  --color-topic-technology: #34d399;
+  --color-topic-uncategorized: #9ca3af;
+
+  /* Maturity colors */
+  --color-stage-seedling: #86efac;
+  --color-stage-budding: #fde047;
+  --color-stage-evergreen: #34d399;
+
+  --font-sans: var(--font-body), system-ui, sans-serif;
+  --font-serif: var(--font-display), Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body), 'Libre Franklin', system-ui, sans-serif;
+  font-size: 1rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
+}
+
+/* Prose styling for MDX content */
+.prose {
+  color: var(--color-text-primary);
+  font-family: var(--font-body), 'Libre Franklin', system-ui, sans-serif;
+  line-height: 1.8;
+  max-width: 68ch;
+  font-size: 1.05rem;
+}
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: var(--color-text-primary);
+  font-family: var(--font-display), 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.prose h1 { font-size: 2rem; margin-top: 2.5rem; margin-bottom: 1rem; }
+.prose h2 { font-size: 1.4rem; margin-top: 2.25rem; margin-bottom: 0.75rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; }
+.prose h3 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.prose p { margin-bottom: 1.35rem; color: var(--color-text-secondary); }
+.prose a { color: var(--color-topic-crypto); text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+.prose a:hover { text-decoration-style: solid; opacity: 0.9; }
+.prose em { color: var(--color-text-primary); }
+.prose strong { color: var(--color-text-primary); font-weight: 600; }
+.prose ul, .prose ol { margin-bottom: 1.35rem; padding-left: 1.5rem; color: var(--color-text-secondary); }
+.prose li { margin-bottom: 0.5rem; }
+.prose li::marker { color: var(--color-text-muted); }
+.prose blockquote {
+  border-left: 2px solid var(--color-border-hover);
+  padding-left: 1.25rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin: 1.75rem 0;
+}
+.prose code {
+  background: var(--color-surface);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.825em;
+  font-family: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--color-topic-crypto);
+}
+.prose pre {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.75rem 0;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  color: var(--color-text-primary);
+}
+.prose hr {
+  border-color: var(--color-border);
+  margin: 2.5rem 0;
+}
+.prose img {
+  border-radius: 8px;
+  margin: 1.75rem 0;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-in;
+}
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out;
 }
