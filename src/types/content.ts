@@ -1,11 +1,20 @@
-export type MaturityStage = "seedling" | "budding" | "evergreen";
+// --- Single source of truth for topics ---
+// Add a new topic here and everything else updates automatically.
+// Label defaults to the capitalized key if not provided.
+const TOPIC_CONFIG = {
+  crypto: { label: "Blockchain & Crypto" },
+  psychology: {},
+  philosophy: {},
+  technology: {},
+  uncategorized: {},
+} as const;
 
-export type Topic =
-  | "crypto"
-  | "psychology"
-  | "philosophy"
-  | "technology"
-  | "uncategorized";
+export type Topic = keyof typeof TOPIC_CONFIG;
+export const VALID_TOPICS = Object.keys(TOPIC_CONFIG) as Topic[];
+
+// --- Single source of truth for stages ---
+export const VALID_STAGES = ["seedling", "budding", "evergreen"] as const;
+export type MaturityStage = (typeof VALID_STAGES)[number];
 
 export interface NoteFrontmatter {
   title: string;
@@ -63,21 +72,17 @@ export interface TagWithCount {
   notes: string[];
 }
 
-export const TOPIC_COLORS: Record<Topic, string> = {
-  crypto: "var(--color-topic-crypto)",
-  psychology: "var(--color-topic-psychology)",
-  philosophy: "var(--color-topic-philosophy)",
-  technology: "var(--color-topic-technology)",
-  uncategorized: "var(--color-topic-uncategorized)",
-};
+export const TOPIC_COLORS = Object.fromEntries(
+  VALID_TOPICS.map((t) => [t, `var(--color-topic-${t})`])
+) as Record<Topic, string>;
 
-export const TOPIC_LABELS: Record<Topic, string> = {
-  crypto: "Crypto & Blockchain",
-  psychology: "Psychology",
-  philosophy: "Philosophy",
-  technology: "Technology",
-  uncategorized: "Uncategorized",
-};
+export const TOPIC_LABELS = Object.fromEntries(
+  VALID_TOPICS.map((t) => [
+    t,
+    (TOPIC_CONFIG[t] as { label?: string }).label ||
+      t.charAt(0).toUpperCase() + t.slice(1),
+  ])
+) as Record<Topic, string>;
 
 export const STAGE_META: Record<
   MaturityStage,

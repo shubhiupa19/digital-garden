@@ -11,19 +11,11 @@ import type {
   MaturityStage,
   Topic,
 } from "@/types/content";
+import { VALID_STAGES, VALID_TOPICS } from "@/types/content";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const NOTES_DIR = path.join(CONTENT_DIR, "notes");
 const LOG_DIR = path.join(CONTENT_DIR, "log");
-
-const VALID_STAGES: MaturityStage[] = ["seedling", "budding", "evergreen"];
-const VALID_TOPICS: Topic[] = [
-  "crypto",
-  "psychology",
-  "philosophy",
-  "technology",
-  "uncategorized",
-];
 
 function validateFrontmatter(
   data: Record<string, unknown>,

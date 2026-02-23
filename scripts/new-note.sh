@@ -6,7 +6,10 @@
 # Example: npm run new psychology dunning-kruger
 # Example: npm run new uncategorized random-thought
 
-TOPICS="crypto psychology philosophy technology uncategorized"
+# Read topics from the single source of truth in src/types/content.ts
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+TYPES_FILE="$SCRIPT_DIR/../src/types/content.ts"
+TOPICS=$(sed -n '/^const TOPIC_CONFIG/,/^}/p' "$TYPES_FILE" | grep '^\s*[a-z]' | grep -v '=' | sed 's/:.*//' | sed 's/^[[:space:]]*//' | tr '\n' ' ')
 TODAY=$(date +%Y-%m-%d)
 
 # --- Parse args ---
@@ -71,6 +74,7 @@ echo ""
 echo "  Next steps:"
 echo "    1. Update the title in the frontmatter"
 echo "    2. Add tags: [tag1, tag2, tag3]"
-echo "    3. Write your note below the ---"
-echo "    4. Connections will be auto-discovered from shared tags"
+echo "    3. Update stage: (seedling, budding, evergreen)"
+echo "    4. Write your note below the ---"
+echo "    5. Connections will be auto-discovered from shared tags"
 echo ""

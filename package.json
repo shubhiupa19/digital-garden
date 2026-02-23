@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "new": "bash scripts/new-note.sh"
+    "new": "bash scripts/new-note.sh",
+    "draft-log": "node scripts/draft-log.js",
+    "format": "prettier --write content/**/*.mdx content/**/*.md",
+    "prepare": "husky"
   },
   "dependencies": {
     "glob": "^13.0.6",
@@ -27,6 +30,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "husky": "^9.1.7",
+    "prettier": "^3.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
