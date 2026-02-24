@@ -10,6 +10,7 @@
     "new": "bash scripts/new-note.sh",
     "draft-log": "node scripts/draft-log.js",
     "format": "prettier --write content/**/*.mdx content/**/*.md",
+    "validate": "node scripts/validate-connections.js",
     "prepare": "husky"
   },
   "dependencies": {

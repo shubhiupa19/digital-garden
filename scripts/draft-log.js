@@ -21,6 +21,7 @@ const { globSync } = require("glob");
 const CONTENT_DIR = path.join(__dirname, "..", "content");
 const NOTES_DIR = path.join(CONTENT_DIR, "notes");
 const LOG_DIR = path.join(CONTENT_DIR, "log");
+const CHANGELOG_FILE = path.join(CONTENT_DIR, "changelog.md");
 
 function getLastLogDate() {
   if (!fs.existsSync(LOG_DIR)) {
@@ -142,8 +143,44 @@ function buildDraft(newNotes, updatedNotes, today) {
   return lines.join("\n");
 }
 
+function updateChangelog(newNotes, updatedNotes, today) {
+  if (!fs.existsSync(CHANGELOG_FILE)) return;
+
+  const raw = fs.readFileSync(CHANGELOG_FILE, "utf-8");
+
+  // Don't add a duplicate entry for today
+  if (raw.includes(`## ${today}`)) {
+    console.log(`  Changelog already has an entry for ${today}, skipping.`);
+    return;
+  }
+
+  const bullets = [];
+
+  for (const note of newNotes) {
+    bullets.push(`- Published new note: "${note.title}"`);
+  }
+
+  for (const note of updatedNotes) {
+    bullets.push(`- Updated note: "${note.title}" (now ${note.stage})`);
+  }
+
+  if (bullets.length === 0) return;
+
+  const entry = `\n## ${today}\n\n${bullets.join("\n")}\n`;
+
+  // Insert after the frontmatter (---)
+  const parts = raw.split(/^---\s*$/m);
+  // parts[0] is before first ---, parts[1] is frontmatter, parts[2] is content
+  if (parts.length >= 3) {
+    const updated = `${parts[0]}---${parts[1]}---\n${entry}${parts[2]}`;
+    fs.writeFileSync(CHANGELOG_FILE, updated, "utf-8");
+    console.log(`  Changelog updated with ${bullets.length} item(s) for ${today}.`);
+  }
+}
+
 function main() {
-  const today = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
   // Don't overwrite if a draft for today already exists
   const todayFile = path.join(LOG_DIR, `${today}.mdx`);
@@ -168,6 +205,9 @@ function main() {
   }
 
   fs.writeFileSync(todayFile, draft, "utf-8");
+
+  // Also update the changelog
+  updateChangelog(newNotes, updatedNotes, today);
 
   console.log("");
   console.log(`  Draft log created: content/log/${today}.mdx`);

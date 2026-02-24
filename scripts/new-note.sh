@@ -54,6 +54,9 @@ if [ -f "$FILE" ]; then
   exit 1
 fi
 
+# Auto-create topic directory if it doesn't exist
+mkdir -p "content/notes/$TOPIC"
+
 # Create the note
 cat > "$FILE" << EOF
 ---
