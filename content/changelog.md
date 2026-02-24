@@ -3,8 +3,7 @@
 
 ## 2026-02-24
 
-- Published new note: "You Don't Have to Understand Crypto to Believe In It"
-- Published new note: "Grief is Unexceptional"
+- Published new note: "grief is unexceptional"
 
 ## 2026-02-23
 
