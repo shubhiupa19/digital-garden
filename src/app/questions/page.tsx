@@ -5,7 +5,8 @@ import remarkGfm from "remark-gfm";
 
 export const metadata: Metadata = {
   title: "Still Figuring Out",
-  description: "Open questions I'm actively exploring — uncertainty is a feature, not a bug.",
+  description:
+    "Open questions I'm actively exploring — uncertainty is a feature, not a bug.",
 };
 
 export default async function QuestionsPage() {
@@ -33,7 +34,7 @@ export default async function QuestionsPage() {
         Still Figuring Out
       </h1>
       <p className="text-text-secondary mb-10">
-        Questions I&apos;m sitting with. Uncertainty is a feature, not a bug.
+        Questions I&apos;m pondering right now.
       </p>
       <div className="prose">{content}</div>
     </div>
