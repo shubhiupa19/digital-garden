@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import rehypeExternalLinks from "rehype-external-links";
 import { getNoteBySlug, getNoteSlugs, getConnectedNotes } from "@/lib/content";
 import MaturityBadge from "@/components/MaturityBadge";
 import TopicPill from "@/components/TopicPill";
@@ -47,6 +48,7 @@ export default async function NotePage({
     options: {
       mdxOptions: {
         remarkPlugins: [remarkGfm],
+        rehypePlugins: [[rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]],
       },
     },
   });
