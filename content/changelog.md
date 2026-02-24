@@ -9,7 +9,6 @@
 ## 2026-02-22
 
 - Launched the digital garden
-- Published initial notes on blockchain and trust
 - Built interactive knowledge graph showing cross-topic connections
 - Added tag filtering and full-text search
 - Created "Still Figuring Out" page with open questions

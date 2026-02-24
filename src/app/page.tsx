@@ -39,8 +39,9 @@ export default async function HomePage() {
         </h1>
         <p className="text-lg text-text-secondary max-w-2xl mb-8 leading-relaxed">
           A living collection of ideas, notes, and half-formed thoughts across
-          crypto, psychology, philosophy, and technology. Not a blog — a space
-          for thinking out loud and connecting ideas across disciplines.
+          my interests spanning crypto, psychology, philosophy, and technology.
+          Not really a blog, but rather a space for thinking out loud and
+          connecting ideas across disciplines.
         </p>
         <SearchBar />
       </section>
