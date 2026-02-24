@@ -23,7 +23,8 @@ export default function SearchBar() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("/search-index.json")
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+    fetch(`${basePath}/search-index.json`)
       .then((r) => r.json())
       .then(setIndex)
       .catch(() => {

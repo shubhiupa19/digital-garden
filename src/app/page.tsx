@@ -12,7 +12,7 @@ export default async function HomePage() {
   const notes = await getAllNotes();
   const recentNotes = notes.slice(0, 6);
   const graphData = await buildGraphData(notes);
-  const obsessions = await getMarkdownContent("obsessions.md");
+  const interests = await getMarkdownContent("interests.md");
   const changelog = await getMarkdownContent("changelog.md");
 
   // Generate search index at build time
@@ -45,43 +45,56 @@ export default async function HomePage() {
         <SearchBar />
       </section>
 
-      {/* Current Obsessions */}
-      {obsessions && (
+      {/* Current Interests */}
+      {interests && (
         <section className="mb-16 animate-slide-up">
           <h2 className="text-2xl font-semibold text-text-primary mb-4">
-            Current Obsessions
+            Current Interests
           </h2>
           <div className="bg-surface border border-border rounded-lg p-6">
             <div className="prose">
-              {obsessions.split("\n").map((line, i) => {
-                if (!line.trim()) return null;
-                if (line.startsWith("# ")) return null;
-                if (line.startsWith("- **")) {
-                  const match = line.match(/- \*\*(.+?)\*\*(.*)$/);
-                  if (match) {
+              {interests
+                .split("\n")
+                .reduce<string[]>((acc, line) => {
+                  // Join continuation lines (indented) back to their parent bullet
+                  if (line.match(/^\s+/) && acc.length > 0) {
+                    acc[acc.length - 1] += " " + line.trim();
+                  } else {
+                    acc.push(line);
+                  }
+                  return acc;
+                }, [])
+                .map((line, i) => {
+                  if (!line.trim()) return null;
+                  if (line.startsWith("# ")) return null;
+                  if (line.startsWith("- **")) {
+                    const match = line.match(/- \*\*(.+?)\*\*(.*)$/);
+                    if (match) {
+                      return (
+                        <p key={i} className="mb-2">
+                          <strong className="text-text-primary">
+                            {match[1]}
+                          </strong>
+                          <span className="text-text-secondary">
+                            {match[2]}
+                          </span>
+                        </p>
+                      );
+                    }
+                  }
+                  if (line.startsWith("- ")) {
                     return (
-                      <p key={i} className="mb-2">
-                        <strong className="text-text-primary">
-                          {match[1]}
-                        </strong>
-                        <span className="text-text-secondary">{match[2]}</span>
+                      <p key={i} className="mb-2 text-text-secondary">
+                        {line.slice(2)}
                       </p>
                     );
                   }
-                }
-                if (line.startsWith("- ")) {
                   return (
                     <p key={i} className="mb-2 text-text-secondary">
-                      {line.slice(2)}
+                      {line}
                     </p>
                   );
-                }
-                return (
-                  <p key={i} className="mb-2 text-text-secondary">
-                    {line}
-                  </p>
-                );
-              })}
+                })}
             </div>
           </div>
         </section>

@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getAllNotes } from "@/lib/content";
 
+export const dynamic = "force-static";
+
 const BASE_URL = "https://shubhiupadhyay.github.io/digital-garden";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
