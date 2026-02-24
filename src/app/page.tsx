@@ -52,7 +52,7 @@ export default async function HomePage() {
             Current Interests
           </h2>
           <div className="bg-surface border border-border rounded-lg p-6">
-            <div className="prose">
+            <div className="space-y-2">
               {interests
                 .split("\n")
                 .reduce<string[]>((acc, line) => {
