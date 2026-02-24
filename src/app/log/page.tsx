@@ -5,10 +5,15 @@ import remarkGfm from "remark-gfm";
 
 export const metadata: Metadata = {
   title: "Learning Log",
-  description: "Lightweight dated entries tracking what I'm learning day by day.",
+  description:
+    "Lightweight dated entries tracking what I'm learning day by day.",
 };
 
-async function LogEntryCard({ entry }: { entry: { date: string; content: string } }) {
+async function LogEntryCard({
+  entry,
+}: {
+  entry: { date: string; content: string };
+}) {
   const { content } = await compileMDX({
     source: entry.content,
     options: { mdxOptions: { remarkPlugins: [remarkGfm] } },
@@ -44,7 +49,7 @@ export default async function LogPage() {
         Learning Log
       </h1>
       <p className="text-text-secondary mb-10">
-        Lightweight notes on what I&apos;m learning. Not polished — just honest.
+        Lightweight notes on what I&apos;m learning.
       </p>
 
       {entries.length > 0 ? (
@@ -54,9 +59,7 @@ export default async function LogPage() {
           ))}
         </div>
       ) : (
-        <p className="text-text-muted text-center py-12">
-          No log entries yet.
-        </p>
+        <p className="text-text-muted text-center py-12">No log entries yet.</p>
       )}
     </div>
   );
