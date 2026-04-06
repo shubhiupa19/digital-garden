@@ -16,6 +16,7 @@ const topics: Topic[] = [
   "psychology",
   "philosophy",
   "technology",
+  "history",
   "uncategorized",
 ];
 const stages: MaturityStage[] = ["seedling", "budding", "evergreen"];
@@ -25,6 +26,7 @@ const topicCheckColor: Record<Topic, string> = {
   psychology: "accent-topic-psychology",
   philosophy: "accent-topic-philosophy",
   technology: "accent-topic-technology",
+  history: "accent-topic-history",
   uncategorized: "accent-topic-uncategorized",
 };
 
