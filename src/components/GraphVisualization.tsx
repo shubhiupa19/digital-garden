@@ -8,6 +8,7 @@ const TOPIC_HEX: Record<Topic, string> = {
   psychology: "#a78bfa",
   philosophy: "#fbbf24",
   technology: "#34d399",
+  history: "#f97316",
   uncategorized: "#9ca3af",
 };
 
