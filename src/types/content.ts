@@ -6,6 +6,7 @@ const TOPIC_CONFIG = {
   psychology: {},
   philosophy: {},
   technology: {},
+  history: {},
   uncategorized: {},
 } as const;
 
@@ -73,7 +74,7 @@ export interface TagWithCount {
 }
 
 export const TOPIC_COLORS = Object.fromEntries(
-  VALID_TOPICS.map((t) => [t, `var(--color-topic-${t})`])
+  VALID_TOPICS.map((t) => [t, `var(--color-topic-${t})`]),
 ) as Record<Topic, string>;
 
 export const TOPIC_LABELS = Object.fromEntries(
@@ -81,7 +82,7 @@ export const TOPIC_LABELS = Object.fromEntries(
     t,
     (TOPIC_CONFIG[t] as { label?: string }).label ||
       t.charAt(0).toUpperCase() + t.slice(1),
-  ])
+  ]),
 ) as Record<Topic, string>;
 
 export const STAGE_META: Record<
