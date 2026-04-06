@@ -6,6 +6,7 @@ const topicStyles: Record<Topic, string> = {
   psychology: "bg-topic-psychology/10 text-topic-psychology",
   philosophy: "bg-topic-philosophy/10 text-topic-philosophy",
   technology: "bg-topic-technology/10 text-topic-technology",
+  history: "bg-topic-history/10 text-topic-history",
   uncategorized: "bg-topic-uncategorized/10 text-topic-uncategorized",
 };
 

@@ -8,6 +8,7 @@ const topicBorderHover: Record<string, string> = {
   psychology: "hover:border-topic-psychology/40",
   philosophy: "hover:border-topic-philosophy/40",
   technology: "hover:border-topic-technology/40",
+  history: "hover:border-topic-history/40",
   uncategorized: "hover:border-topic-uncategorized/40",
 };
 
