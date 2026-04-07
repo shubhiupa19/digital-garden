@@ -1,6 +1,12 @@
 ---
 ---
 
+## 2026-04-07
+
+- Published new note: "Context of the Babri Masjid Demolition"
+- Published new note: "You Don't Have to Understand Crypto to Believe In It"
+- Published new note: "grief is unexceptional"
+
 ## 2026-04-06
 
 - Published new note: "Context of the Babri Masjid "
