@@ -80,6 +80,8 @@ body {
 .prose a:hover { text-decoration-style: solid; opacity: 0.9; }
 .prose em { color: var(--color-text-primary); }
 .prose strong { color: var(--color-text-primary); font-weight: 600; }
+.prose ul { list-style-type: disc; }
+.prose ol { list-style-type: decimal; }
 .prose ul, .prose ol { margin-bottom: 1.35rem; padding-left: 1.5rem; color: var(--color-text-secondary); }
 .prose li { margin-bottom: 0.5rem; }
 .prose li::marker { color: var(--color-text-muted); }

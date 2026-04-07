@@ -15,7 +15,7 @@ import Footer from "@/components/Footer";
 // Each font is loaded from Google Fonts and exposed as a CSS variable.
 // globals.css maps those variables to --font-sans, --font-serif, --font-mono.
 const libreFranklin = Libre_Franklin({
-  variable: "--font-body",    // body text
+  variable: "--font-body", // body text
   subsets: ["latin"],
 });
 
