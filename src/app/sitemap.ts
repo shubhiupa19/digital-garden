@@ -1,3 +1,14 @@
+/**
+ * sitemap.ts — auto-generates /sitemap.xml at build time.
+ *
+ * Search engines use this file to discover pages and understand how often they
+ * change. Next.js calls this function during the build and serves the result at
+ * /sitemap.xml automatically — no manual maintenance needed.
+ *
+ * Priority and changeFrequency are hints to search engines, not hard rules.
+ * Evergreen notes (polished) get higher priority than seedlings (rough).
+ */
+
 import type { MetadataRoute } from "next";
 import { getAllNotes } from "@/lib/content";
 

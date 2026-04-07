@@ -1,3 +1,15 @@
+/**
+ * lib/content.ts — data access layer for all content.
+ *
+ * All file reads happen here. Pages and components never touch the filesystem
+ * directly — they call these functions. This keeps I/O in one place and makes
+ * it easy to change how content is stored without touching the UI.
+ *
+ * Notes live at:  content/notes/<topic>/<slug>.mdx
+ * Log entries at: content/log/<YYYY-MM-DD>.mdx
+ * Misc content:   content/interests.md, content/questions.md, content/changelog.md
+ */
+
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
@@ -17,6 +29,9 @@ const CONTENT_DIR = path.join(process.cwd(), "content");
 const NOTES_DIR = path.join(CONTENT_DIR, "notes");
 const LOG_DIR = path.join(CONTENT_DIR, "log");
 
+// Throws a descriptive error at build time if a note's frontmatter is missing
+// required fields or uses an invalid topic/stage. This makes the build fail
+// fast and loudly rather than silently rendering a broken note.
 function validateFrontmatter(
   data: Record<string, unknown>,
   filepath: string
@@ -43,13 +58,16 @@ function validateFrontmatter(
     updated: data.updated ? String(data.updated) : undefined,
     stage: data.stage as MaturityStage,
     topic: data.topic as Topic,
-    tags: Array.isArray(data.tags) ? data.tags : [],
+    tags: Array.isArray(data.tags) ? data.tags.map((t: string) => t.toLowerCase()) : [],
     connections: Array.isArray(data.connections) ? data.connections : [],
   };
 }
 
+// In-memory cache so getAllNotes() only hits the filesystem once per build.
+// The cache is process-scoped — it resets on each `next build` or `next dev` restart.
 let notesCache: Note[] | null = null;
 
+/** Returns all notes sorted by date descending (most recent first). */
 export async function getAllNotes(): Promise<Note[]> {
   if (notesCache) return notesCache;
 
@@ -82,6 +100,7 @@ export async function getAllNotes(): Promise<Note[]> {
   return notes;
 }
 
+/** Fetches a single note by its slug (e.g. "crypto/bitcoin-basics"). Returns null if not found. */
 export async function getNoteBySlug(slug: string): Promise<Note | null> {
   const filepath = path.join(NOTES_DIR, `${slug}.mdx`);
   if (!fs.existsSync(filepath)) return null;
@@ -94,20 +113,25 @@ export async function getNoteBySlug(slug: string): Promise<Note | null> {
   return { slug, frontmatter, content, readingTime: rt.text };
 }
 
+/**
+ * Returns all note slugs for Next.js static generation.
+ * Called by generateStaticParams() in the note page to pre-render every note at build time.
+ */
 export async function getNoteSlugs(): Promise<string[]> {
   const files = await glob("**/*.mdx", { cwd: NOTES_DIR });
   return files.map((f) => f.replace(/\.mdx$/, ""));
 }
 
+/** Aggregates all tags across every note, sorted by frequency (most used first). */
 export async function getAllTags(): Promise<TagWithCount[]> {
   const notes = await getAllNotes();
   const tagMap = new Map<string, string[]>();
 
   for (const note of notes) {
     for (const tag of note.frontmatter.tags) {
-      const normalized = tag.toLowerCase();
-      if (!tagMap.has(normalized)) tagMap.set(normalized, []);
-      tagMap.get(normalized)!.push(note.slug);
+      // Tags are already lowercased at parse time in validateFrontmatter.
+      if (!tagMap.has(tag)) tagMap.set(tag, []);
+      tagMap.get(tag)!.push(note.slug);
     }
   }
 
@@ -120,6 +144,11 @@ export async function getAllTags(): Promise<TagWithCount[]> {
   return tags;
 }
 
+/**
+ * Returns notes connected to a given note, split into two groups:
+ *   manual — explicitly listed in the note's `connections: []` frontmatter (bidirectional)
+ *   auto   — discovered automatically because they share 2+ tags with this note
+ */
 export async function getConnectedNotes(
   slug: string
 ): Promise<{ manual: Note[]; auto: Note[] }> {
@@ -141,15 +170,15 @@ export async function getConnectedNotes(
 
   const manual = allNotes.filter((n) => manualSlugs.has(n.slug));
 
-  // Auto connections: notes sharing 2+ tags (excluding already-manual ones)
-  const noteTags = new Set(note.frontmatter.tags.map((t) => t.toLowerCase()));
+  // Auto connections: notes sharing 2+ tags (excluding already-manual ones).
+  // Tags are already lowercased at parse time so no normalization needed here.
+  const noteTags = new Set(note.frontmatter.tags);
   const auto: Note[] = [];
 
   if (noteTags.size > 0) {
     for (const other of allNotes) {
       if (other.slug === slug || manualSlugs.has(other.slug)) continue;
-      const otherTags = other.frontmatter.tags.map((t) => t.toLowerCase());
-      const shared = otherTags.filter((t) => noteTags.has(t));
+      const shared = other.frontmatter.tags.filter((t) => noteTags.has(t));
       if (shared.length >= 2) {
         auto.push(other);
       }
@@ -179,10 +208,11 @@ export async function getAllConnections(): Promise<
     }
   }
 
-  // Auto connections: notes sharing 2+ tags
+  // Auto connections: notes sharing 2+ tags.
+  // Tags are already lowercased at parse time so no normalization needed here.
   for (let i = 0; i < allNotes.length; i++) {
     const a = allNotes[i];
-    const aTags = new Set(a.frontmatter.tags.map((t) => t.toLowerCase()));
+    const aTags = new Set(a.frontmatter.tags);
     if (aTags.size === 0) continue;
 
     for (let j = i + 1; j < allNotes.length; j++) {
@@ -190,8 +220,7 @@ export async function getAllConnections(): Promise<
       const key = [a.slug, b.slug].sort().join(":::");
       if (seen.has(key)) continue;
 
-      const bTags = b.frontmatter.tags.map((t) => t.toLowerCase());
-      const shared = bTags.filter((t) => aTags.has(t));
+      const shared = b.frontmatter.tags.filter((t) => aTags.has(t));
       if (shared.length >= 2) {
         seen.add(key);
         connections.push({ source: a.slug, target: b.slug, type: "auto" });
@@ -202,6 +231,7 @@ export async function getAllConnections(): Promise<
   return connections;
 }
 
+/** Returns all log entries sorted by date descending. */
 export async function getLogEntries(): Promise<LogEntry[]> {
   if (!fs.existsSync(LOG_DIR)) return [];
 
@@ -227,6 +257,10 @@ export async function getLogEntries(): Promise<LogEntry[]> {
   return entries;
 }
 
+/**
+ * Loads a plain markdown file from the content/ root (e.g. "interests.md").
+ * Strips frontmatter if present and returns just the body content.
+ */
 export async function getMarkdownContent(
   filename: string
 ): Promise<string | null> {

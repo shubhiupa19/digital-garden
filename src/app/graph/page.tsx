@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllNotes } from "@/lib/content";
 import { buildGraphData } from "@/lib/graph";
-import GraphPageClient from "./GraphPageClient";
+import GraphWrapper from "@/components/GraphWrapper";
 
 export const metadata: Metadata = {
   title: "Knowledge Graph",
@@ -14,9 +14,10 @@ export default async function GraphPage() {
 
   return (
     <div className="h-[calc(100vh-3.5rem)] relative">
-      <GraphPageClient graphData={graphData} />
+      <GraphWrapper graphData={graphData} />
 
-      {/* Legend */}
+      {/* Legend — note: Tailwind requires full class strings, so these can't be
+           generated dynamically. If you add a topic, add a row here too. */}
       <div className="absolute top-4 right-4 bg-surface/90 backdrop-blur-sm border border-border rounded-lg p-4 text-xs space-y-2 z-10">
         <p className="text-text-muted font-medium uppercase tracking-wider mb-2">Topics</p>
         <div className="flex items-center gap-2">
@@ -34,6 +35,14 @@ export default async function GraphPage() {
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full bg-topic-technology" />
           <span className="text-text-secondary">Technology</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-topic-history" />
+          <span className="text-text-secondary">History</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-topic-self-growth" />
+          <span className="text-text-secondary">Self-growth</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full bg-topic-uncategorized" />

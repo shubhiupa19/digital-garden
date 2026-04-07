@@ -3,12 +3,16 @@ import type { Note } from "@/types/content";
 import MaturityBadge from "./MaturityBadge";
 import TopicPill from "./TopicPill";
 
+// Tailwind class strings must be written out in full — Tailwind can't detect
+// dynamically constructed strings like `hover:border-topic-${topic}/40`.
+// If you add a new topic in types/content.ts, add its hover class here too.
 const topicBorderHover: Record<string, string> = {
   crypto: "hover:border-topic-crypto/40",
   psychology: "hover:border-topic-psychology/40",
   philosophy: "hover:border-topic-philosophy/40",
   technology: "hover:border-topic-technology/40",
   history: "hover:border-topic-history/40",
+  "self-growth": "hover:border-topic-self-growth/40",
   uncategorized: "hover:border-topic-uncategorized/40",
 };
 

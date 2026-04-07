@@ -8,6 +8,10 @@ import TopicPill from "@/components/TopicPill";
 import ConnectionsList from "@/components/ConnectionsList";
 import Link from "next/link";
 
+// [...slug] is a Next.js catch-all route — it matches any path depth under /notes/.
+// e.g. /notes/crypto/bitcoin  →  params.slug = ["crypto", "bitcoin"]
+// generateStaticParams tells Next.js which slugs to pre-render at build time
+// so they're served as static HTML (no server needed).
 export async function generateStaticParams() {
   const slugs = await getNoteSlugs();
   return slugs.map((slug) => ({

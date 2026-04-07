@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "new": "bash scripts/new-note.sh",
+    "new": "node scripts/new-note.js",
     "draft-log": "node scripts/draft-log.js",
     "format": "prettier --write content/**/*.mdx content/**/*.md",
     "validate": "node scripts/validate-connections.js",

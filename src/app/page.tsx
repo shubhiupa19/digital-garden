@@ -1,12 +1,16 @@
 import Link from "next/link";
+import { compileMDX } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { getAllNotes, getMarkdownContent } from "@/lib/content";
 import { buildGraphData } from "@/lib/graph";
 import { buildSearchIndex } from "@/lib/search";
 import NoteCard from "@/components/NoteCard";
 import SearchBar from "@/components/SearchBar";
-import HomeGraphWrapper from "@/components/HomeGraphWrapper";
+import GraphWrapper from "@/components/GraphWrapper";
 import fs from "fs";
 import path from "path";
+
+const MDX_OPTIONS = { mdxOptions: { remarkPlugins: [remarkGfm] } };
 
 export default async function HomePage() {
   const notes = await getAllNotes();
@@ -15,18 +19,28 @@ export default async function HomePage() {
   const interests = await getMarkdownContent("interests.md");
   const changelog = await getMarkdownContent("changelog.md");
 
-  // Generate search index at build time
+  // Write the search index to public/ at build time so the SearchBar component
+  // can fetch it at runtime with a simple GET /search-index.json. This avoids
+  // needing an API route while keeping search fully functional on static hosting.
   const searchIndex = buildSearchIndex(notes);
-  const indexPath = path.join(process.cwd(), "public", "search-index.json");
-  fs.writeFileSync(indexPath, JSON.stringify(searchIndex));
+  fs.writeFileSync(
+    path.join(process.cwd(), "public", "search-index.json"),
+    JSON.stringify(searchIndex)
+  );
 
-  // Parse changelog into recent entries
-  const changelogLines = changelog
-    ? changelog
-        .split("\n")
-        .filter((l) => l.trim())
-        .slice(0, 10)
-    : [];
+  // Compile markdown sections with MDX so they render like note content does.
+  // For the changelog preview we only take the first ~15 lines (most recent entry).
+  const [interestsContent, changelogContent] = await Promise.all([
+    interests
+      ? compileMDX({ source: interests, options: MDX_OPTIONS }).then((r) => r.content)
+      : null,
+    changelog
+      ? compileMDX({
+          source: changelog.split("\n").slice(0, 15).join("\n"),
+          options: MDX_OPTIONS,
+        }).then((r) => r.content)
+      : null,
+  ]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
@@ -47,56 +61,13 @@ export default async function HomePage() {
       </section>
 
       {/* Current Interests */}
-      {interests && (
+      {interestsContent && (
         <section className="mb-16 animate-slide-up">
           <h2 className="text-2xl font-semibold text-text-primary mb-4">
             Current Interests
           </h2>
           <div className="bg-surface border border-border rounded-lg p-6">
-            <div className="space-y-2">
-              {interests
-                .split("\n")
-                .reduce<string[]>((acc, line) => {
-                  // Join continuation lines (indented) back to their parent bullet
-                  if (line.match(/^\s+/) && acc.length > 0) {
-                    acc[acc.length - 1] += " " + line.trim();
-                  } else {
-                    acc.push(line);
-                  }
-                  return acc;
-                }, [])
-                .map((line, i) => {
-                  if (!line.trim()) return null;
-                  if (line.startsWith("# ")) return null;
-                  if (line.startsWith("- **")) {
-                    const match = line.match(/- \*\*(.+?)\*\*(.*)$/);
-                    if (match) {
-                      return (
-                        <p key={i} className="mb-2">
-                          <strong className="text-text-primary">
-                            {match[1]}
-                          </strong>
-                          <span className="text-text-secondary">
-                            {match[2]}
-                          </span>
-                        </p>
-                      );
-                    }
-                  }
-                  if (line.startsWith("- ")) {
-                    return (
-                      <p key={i} className="mb-2 text-text-secondary">
-                        {line.slice(2)}
-                      </p>
-                    );
-                  }
-                  return (
-                    <p key={i} className="mb-2 text-text-secondary">
-                      {line}
-                    </p>
-                  );
-                })}
-            </div>
+            <div className="prose">{interestsContent}</div>
           </div>
         </section>
       )}
@@ -137,12 +108,15 @@ export default async function HomePage() {
               Explore full graph →
             </Link>
           </div>
-          <HomeGraphWrapper graphData={graphData} />
+          <GraphWrapper
+            graphData={graphData}
+            containerClassName="h-[400px] rounded-lg overflow-hidden border border-border"
+          />
         </section>
       )}
 
-      {/* Changelog */}
-      {changelogLines.length > 0 && (
+      {/* Changelog preview */}
+      {changelogContent && (
         <section className="mb-16">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-text-primary">
@@ -156,32 +130,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="bg-surface border border-border rounded-lg p-6">
-            <div className="space-y-1">
-              {changelogLines.map((line, i) => {
-                if (line.startsWith("## ")) {
-                  return (
-                    <p
-                      key={i}
-                      className="text-sm font-semibold text-text-primary mt-3 first:mt-0"
-                    >
-                      {line.replace("## ", "")}
-                    </p>
-                  );
-                }
-                if (line.startsWith("- ")) {
-                  return (
-                    <p key={i} className="text-sm text-text-secondary pl-3">
-                      {line}
-                    </p>
-                  );
-                }
-                return (
-                  <p key={i} className="text-sm text-text-secondary">
-                    {line}
-                  </p>
-                );
-              })}
-            </div>
+            <div className="prose">{changelogContent}</div>
           </div>
         </section>
       )}

@@ -11,6 +11,7 @@ const topicColor: Record<Topic, string> = {
   philosophy: "text-topic-philosophy",
   technology: "text-topic-technology",
   history: "text-topic-history",
+  "self-growth": "text-topic-self-growth",
   uncategorized: "text-topic-uncategorized",
 };
 

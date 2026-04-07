@@ -1,9 +1,13 @@
 "use client";
 
+// Navigation must be a client component because it uses usePathname() to
+// highlight the active link — that requires knowing the current URL at runtime.
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+// To add or remove a nav item, edit this array.
 const links = [
   { href: "/", label: "Home" },
   { href: "/notes", label: "Notes" },

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { Note, Topic, MaturityStage, TagWithCount } from "@/types/content";
-import { TOPIC_LABELS, STAGE_META } from "@/types/content";
+import { TOPIC_LABELS, STAGE_META, VALID_TOPICS, VALID_STAGES } from "@/types/content";
 import TagPill from "./TagPill";
 
 interface Props {
@@ -11,15 +11,10 @@ interface Props {
   children: (filtered: Note[]) => React.ReactNode;
 }
 
-const topics: Topic[] = [
-  "crypto",
-  "psychology",
-  "philosophy",
-  "technology",
-  "history",
-  "uncategorized",
-];
-const stages: MaturityStage[] = ["seedling", "budding", "evergreen"];
+// Sourced from VALID_TOPICS/VALID_STAGES so adding a topic in types/content.ts
+// automatically surfaces it here without any extra changes.
+const topics: Topic[] = VALID_TOPICS;
+const stages: MaturityStage[] = [...VALID_STAGES];
 
 const topicCheckColor: Record<Topic, string> = {
   crypto: "accent-topic-crypto",
@@ -27,6 +22,7 @@ const topicCheckColor: Record<Topic, string> = {
   philosophy: "accent-topic-philosophy",
   technology: "accent-topic-technology",
   history: "accent-topic-history",
+  "self-growth": "accent-topic-self-growth",
   uncategorized: "accent-topic-uncategorized",
 };
 

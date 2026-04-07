@@ -9,6 +9,7 @@ const TOPIC_HEX: Record<Topic, string> = {
   philosophy: "#fbbf24",
   technology: "#34d399",
   history: "#f97316",
+  "self-growth": "#f472b6",
   uncategorized: "#9ca3af",
 };
 
@@ -59,7 +60,8 @@ export default function GraphVisualization({
       const size = node.val as number;
       const color = TOPIC_HEX[topic] || "#9ca3af";
 
-      // Draw node circle
+      // Draw node circle. Appending "33" to a 6-digit hex color sets alpha to
+      // ~20% (0x33/0xFF ≈ 0.2) — gives the filled circle a translucent look.
       ctx.beginPath();
       ctx.arc(node.x!, node.y!, size, 0, 2 * Math.PI);
       ctx.fillStyle = color + "33";

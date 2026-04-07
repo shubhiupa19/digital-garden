@@ -1,22 +1,32 @@
+/**
+ * layout.tsx — root HTML shell
+ *
+ * This wraps every page on the site. Anything you put here (nav, footer, fonts,
+ * metadata) applies globally. Next.js renders this once and slots each page's
+ * content into the {children} placeholder.
+ */
+
 import type { Metadata } from "next";
 import { Libre_Franklin, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
+// Each font is loaded from Google Fonts and exposed as a CSS variable.
+// globals.css maps those variables to --font-sans, --font-serif, --font-mono.
 const libreFranklin = Libre_Franklin({
-  variable: "--font-body",
+  variable: "--font-body",    // body text
   subsets: ["latin"],
 });
 
 const fraunces = Fraunces({
-  variable: "--font-display",
+  variable: "--font-display", // headings and titles (the serif)
   subsets: ["latin"],
   style: ["normal", "italic"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains",
+  variable: "--font-jetbrains", // code blocks
   subsets: ["latin"],
 });
 

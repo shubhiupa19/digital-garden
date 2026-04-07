@@ -10,12 +10,15 @@
   --color-text-secondary: #9ca3af;
   --color-text-muted: #6b7280;
 
-  /* Topic colors */
+  /* Topic colors — one variable per topic.
+     When adding a new topic in src/types/content.ts, add a matching
+     --color-topic-<key> variable here or it won't render correctly. */
   --color-topic-crypto: #22d3ee;
   --color-topic-psychology: #a78bfa;
   --color-topic-philosophy: #fbbf24;
   --color-topic-technology: #34d399;
   --color-topic-history: #f97316;
+  --color-topic-self-growth: #f472b6;
   --color-topic-uncategorized: #9ca3af;
 
   /* Maturity colors */

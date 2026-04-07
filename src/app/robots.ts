@@ -1,3 +1,10 @@
+/**
+ * robots.ts — auto-generates /robots.txt at build time.
+ *
+ * Tells web crawlers they're allowed to index everything, and points them
+ * to the sitemap so they can discover all pages efficiently.
+ */
+
 import type { MetadataRoute } from "next";
 
 export const dynamic = "force-static";
