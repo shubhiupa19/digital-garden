@@ -9,7 +9,7 @@ import type { GraphData } from "@/types/content";
 // height box; the graph page fills the full viewport.
 export default function GraphWrapper({
   graphData,
-  containerClassName,
+  containerClassName = "h-full w-full",
 }: {
   graphData: GraphData;
   containerClassName?: string;

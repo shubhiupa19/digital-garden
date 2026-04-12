@@ -4,9 +4,8 @@ import remarkGfm from "remark-gfm";
 import { getAllNotes, getMarkdownContent } from "@/lib/content";
 import { buildGraphData } from "@/lib/graph";
 import { buildSearchIndex } from "@/lib/search";
-import NoteCard from "@/components/NoteCard";
-import SearchBar from "@/components/SearchBar";
 import GraphWrapper from "@/components/GraphWrapper";
+import HomeClient from "@/components/HomeClient";
 import fs from "fs";
 import path from "path";
 
@@ -14,136 +13,238 @@ const MDX_OPTIONS = { mdxOptions: { remarkPlugins: [remarkGfm] } };
 
 export default async function HomePage() {
   const notes = await getAllNotes();
-  const recentNotes = notes.slice(0, 6);
   const graphData = await buildGraphData(notes);
-  const interests = await getMarkdownContent("interests.md");
-  const changelog = await getMarkdownContent("changelog.md");
+  const changelogRaw = await getMarkdownContent("changelog.md");
+  const questionsRaw = await getMarkdownContent("questions.md");
 
-  // Write the search index to public/ at build time so the SearchBar component
-  // can fetch it at runtime with a simple GET /search-index.json. This avoids
-  // needing an API route while keeping search fully functional on static hosting.
+  // Write search index at build time
   const searchIndex = buildSearchIndex(notes);
   fs.writeFileSync(
     path.join(process.cwd(), "public", "search-index.json"),
     JSON.stringify(searchIndex)
   );
 
-  // Compile markdown sections with MDX so they render like note content does.
-  // For the changelog preview we only take the first ~15 lines (most recent entry).
-  const [interestsContent, changelogContent] = await Promise.all([
-    interests
-      ? compileMDX({ source: interests, options: MDX_OPTIONS }).then((r) => r.content)
-      : null,
-    changelog
-      ? compileMDX({
-          source: changelog.split("\n").slice(0, 15).join("\n"),
-          options: MDX_OPTIONS,
-        }).then((r) => r.content)
-      : null,
-  ]);
+  // Compile changelog preview (first ~10 lines)
+  const changelogContent = changelogRaw
+    ? await compileMDX({
+        source: changelogRaw.split("\n").slice(0, 10).join("\n"),
+        options: MDX_OPTIONS,
+      }).then((r) => r.content)
+    : null;
+
+  // Parse questions bullets from markdown
+  const questions = questionsRaw
+    ? questionsRaw
+        .split("\n")
+        .filter((l) => l.trim().startsWith("-"))
+        .map((l) => l.replace(/^-\s*/, "").trim())
+        .filter(Boolean)
+        .slice(0, 4)
+    : [];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-      {/* Hero */}
-      <section className="mb-16 animate-fade-in">
-        <h1 className="text-4xl sm:text-5xl font-medium text-text-primary mb-4 tracking-tight font-serif">
-          Welcome to my
-          <br />
-          <span className="text-topic-crypto">digital garden</span>
-        </h1>
-        <p className="text-lg text-text-secondary max-w-2xl mb-8 leading-relaxed">
-          A living collection of ideas, notes, and half-formed thoughts across
-          my interests spanning crypto, psychology, philosophy, and technology.
-          Not really a blog, but rather a space for thinking out loud and
-          connecting ideas across disciplines.
-        </p>
-        <SearchBar />
+    <div>
+      {/* ── HERO ──────────────────────────────────────────────── */}
+      <section
+        className="relative overflow-hidden text-center"
+        style={{
+          background: "var(--color-surface)",
+          borderBottom: "2px solid var(--color-border)",
+          padding: "64px 48px 56px",
+        }}
+      >
+        <div className="max-w-2xl mx-auto relative">
+          {/* Washi label */}
+          <div className="mb-5">
+            <span className="washi olive">Welcome to my garden</span>
+          </div>
+
+          {/* Headline */}
+          <h1
+            className="font-serif italic font-medium leading-snug mb-5 animate-fade-in"
+            style={{
+              fontSize: "clamp(2.2rem, 5vw, 3.4rem)",
+              color: "var(--color-text-primary)",
+            }}
+          >
+            A living collection of ideas, notes, and half-formed thoughts.
+          </h1>
+
+          {/* Description */}
+          <p
+            className="text-base leading-relaxed max-w-lg mx-auto animate-slide-up"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            Not a blog — a space for thinking out loud. I write about crypto,
+            psychology, philosophy, and technology. Things here are always
+            growing, changing, and connecting to each other.
+          </p>
+
+          {/* Decorative stamps */}
+          <div
+            className="absolute top-0 right-0 hidden sm:block"
+            style={{ transform: "rotate(6deg)" }}
+          >
+            <span className="stamp" style={{ color: "var(--color-rust)" }}>
+              Learning in public
+            </span>
+          </div>
+          <div
+            className="absolute bottom-0 left-0 hidden sm:block"
+            style={{ transform: "rotate(-4deg)" }}
+          >
+            <span className="stamp" style={{ color: "var(--color-olive)" }}>
+              Est. 2026
+            </span>
+          </div>
+        </div>
       </section>
 
-      {/* Current Interests */}
-      {interestsContent && (
-        <section className="mb-16 animate-slide-up">
-          <h2 className="text-2xl font-semibold text-text-primary mb-4">
-            Current Interests
-          </h2>
-          <div className="bg-surface border border-border rounded-lg p-6">
-            <div className="prose">{interestsContent}</div>
-          </div>
-        </section>
-      )}
+      {/* ── CHECKER ── */}
+      <div className="checker-strip olive" />
 
-      {/* Recent Notes */}
-      {recentNotes.length > 0 && (
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-text-primary">
-              Recent Notes
-            </h2>
-            <Link
-              href="/notes"
-              className="text-sm text-text-muted hover:text-text-primary transition-colors"
+      {/* ── GROWTH LEGEND ── */}
+      <div
+        className="flex justify-center gap-8 flex-wrap px-4 py-4"
+        style={{
+          background: "var(--color-parchment)",
+          borderBottom: "2px solid var(--color-border)",
+        }}
+      >
+        {[
+          { emoji: "🌱", label: "Seedling — just planted" },
+          { emoji: "🌿", label: "Budding — growing" },
+          { emoji: "🌳", label: "Evergreen — fully formed" },
+        ].map(({ emoji, label }) => (
+          <div key={label} className="flex items-center gap-2">
+            <span className="text-lg">{emoji}</span>
+            <span
+              className="font-serif italic text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
             >
-              View all →
-            </Link>
+              {label}
+            </span>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {recentNotes.map((note) => (
-              <NoteCard key={note.slug} note={note} />
-            ))}
+        ))}
+      </div>
+
+      {/* ── NOTES (client: filter tabs + grid) ── */}
+      <HomeClient notes={notes} />
+
+      {/* ── CHECKER ── */}
+      <div className="checker-strip rust" />
+
+      {/* ── STILL FIGURING OUT ── */}
+      {questions.length > 0 && (
+        <section
+          style={{
+            background: "var(--color-parchment)",
+            borderTop: "2px solid var(--color-border)",
+            borderBottom: "2px solid var(--color-border)",
+            padding: "64px 48px",
+          }}
+        >
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-4 mb-8">
+              <h2
+                className="font-serif font-medium italic"
+                style={{
+                  fontSize: "1.8rem",
+                  color: "var(--color-text-primary)",
+                }}
+              >
+                Still Figuring Out
+              </h2>
+              <span className="washi mauve">Open Questions</span>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {questions.map((q, i) => (
+                <div key={i} className="q-card">
+                  <p
+                    className="font-serif italic leading-snug text-lg"
+                    style={{ color: "var(--color-text-primary)" }}
+                  >
+                    &ldquo;{q}&rdquo;
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6">
+              <Link
+                href="/questions"
+                className="text-sm font-bold uppercase tracking-wider transition-colors"
+                style={{ color: "var(--color-text-muted)" }}
+              >
+                See all open questions →
+              </Link>
+            </div>
           </div>
         </section>
       )}
 
-      {/* Graph Preview */}
+      {/* ── CHECKER ── */}
+      <div className="checker-strip mauve" />
+
+      {/* ── KNOWLEDGE GRAPH ── */}
       {graphData.nodes.length > 0 && (
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-text-primary">
-              Knowledge Graph
-            </h2>
-            <Link
-              href="/graph"
-              className="text-sm text-text-muted hover:text-text-primary transition-colors"
-            >
-              Explore full graph →
+        <section className="text-center px-4 sm:px-12 py-16">
+          <h2
+            className="font-serif font-medium italic mb-2"
+            style={{ fontSize: "1.8rem", color: "var(--color-text-primary)" }}
+          >
+            Knowledge Graph
+          </h2>
+          <p className="text-sm mb-8" style={{ color: "var(--color-text-muted)" }}>
+            How ideas connect across topics
+          </p>
+          <div
+            className="max-w-3xl mx-auto overflow-hidden"
+            style={{
+              border: "2px solid var(--color-text-primary)",
+              borderRadius: "10px",
+              height: "300px",
+            }}
+          >
+            <GraphWrapper
+              graphData={graphData}
+              containerClassName="h-full w-full"
+            />
+          </div>
+          <div className="mt-6">
+            <Link href="/graph" className="garden-cta">
+              Explore Full Graph →
             </Link>
           </div>
-          <GraphWrapper
-            graphData={graphData}
-            containerClassName="h-[400px] rounded-lg overflow-hidden border border-border"
-          />
         </section>
       )}
 
-      {/* Changelog preview */}
+      {/* ── CHECKER ── */}
+      <div className="checker-strip" />
+
+      {/* ── CHANGELOG ── */}
       {changelogContent && (
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-text-primary">
-              Latest Updates
+        <section className="max-w-4xl mx-auto px-4 sm:px-12 py-16">
+          <div className="flex items-center gap-4 mb-7">
+            <h2
+              className="font-serif font-medium italic"
+              style={{ fontSize: "1.8rem", color: "var(--color-text-primary)" }}
+            >
+              Changelog
             </h2>
+            <span className="washi olive">What&apos;s New</span>
+          </div>
+          <div className="prose">{changelogContent}</div>
+          <div className="mt-6">
             <Link
               href="/changelog"
-              className="text-sm text-text-muted hover:text-text-primary transition-colors"
+              className="text-sm font-bold uppercase tracking-wider"
+              style={{ color: "var(--color-text-muted)" }}
             >
               Full changelog →
             </Link>
           </div>
-          <div className="bg-surface border border-border rounded-lg p-6">
-            <div className="prose">{changelogContent}</div>
-          </div>
         </section>
       )}
-
-      {/* Still Figuring Out link */}
-      <section className="text-center">
-        <Link
-          href="/questions"
-          className="inline-flex items-center gap-2 text-text-muted hover:text-text-primary transition-colors text-sm"
-        >
-          See what I&apos;m still figuring out →
-        </Link>
-      </section>
     </div>
   );
 }

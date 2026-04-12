@@ -11,20 +11,8 @@ interface Props {
   children: (filtered: Note[]) => React.ReactNode;
 }
 
-// Sourced from VALID_TOPICS/VALID_STAGES so adding a topic in types/content.ts
-// automatically surfaces it here without any extra changes.
 const topics: Topic[] = VALID_TOPICS;
 const stages: MaturityStage[] = [...VALID_STAGES];
-
-const topicCheckColor: Record<Topic, string> = {
-  crypto: "accent-topic-crypto",
-  psychology: "accent-topic-psychology",
-  philosophy: "accent-topic-philosophy",
-  technology: "accent-topic-technology",
-  history: "accent-topic-history",
-  "self-growth": "accent-topic-self-growth",
-  uncategorized: "accent-topic-uncategorized",
-};
 
 export default function FilterPanel({ notes, allTags, children }: Props) {
   const [selectedTopics, setSelectedTopics] = useState<Set<Topic>>(new Set());
@@ -35,15 +23,9 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
 
   const filtered = useMemo(() => {
     return notes.filter((note) => {
-      if (selectedTopics.size > 0 && !selectedTopics.has(note.frontmatter.topic))
-        return false;
-      if (selectedStages.size > 0 && !selectedStages.has(note.frontmatter.stage))
-        return false;
-      if (
-        selectedTags.size > 0 &&
-        !note.frontmatter.tags.some((t) => selectedTags.has(t.toLowerCase()))
-      )
-        return false;
+      if (selectedTopics.size > 0 && !selectedTopics.has(note.frontmatter.topic)) return false;
+      if (selectedStages.size > 0 && !selectedStages.has(note.frontmatter.stage)) return false;
+      if (selectedTags.size > 0 && !note.frontmatter.tags.some((t) => selectedTags.has(t.toLowerCase()))) return false;
       return true;
     });
   }, [notes, selectedTopics, selectedTags, selectedStages]);
@@ -54,46 +36,26 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
   }, [allTags, tagSearch]);
 
   function toggleTopic(t: Topic) {
-    setSelectedTopics((prev) => {
-      const next = new Set(prev);
-      if (next.has(t)) next.delete(t);
-      else next.add(t);
-      return next;
-    });
+    setSelectedTopics((prev) => { const next = new Set(prev); if (next.has(t)) next.delete(t); else next.add(t); return next; });
   }
-
   function toggleTag(t: string) {
-    setSelectedTags((prev) => {
-      const next = new Set(prev);
-      if (next.has(t)) next.delete(t);
-      else next.add(t);
-      return next;
-    });
+    setSelectedTags((prev) => { const next = new Set(prev); if (next.has(t)) next.delete(t); else next.add(t); return next; });
   }
-
   function toggleStage(s: MaturityStage) {
-    setSelectedStages((prev) => {
-      const next = new Set(prev);
-      if (next.has(s)) next.delete(s);
-      else next.add(s);
-      return next;
-    });
+    setSelectedStages((prev) => { const next = new Set(prev); if (next.has(s)) next.delete(s); else next.add(s); return next; });
   }
 
-  const hasFilters =
-    selectedTopics.size > 0 || selectedTags.size > 0 || selectedStages.size > 0;
-
-  function clearAll() {
-    setSelectedTopics(new Set());
-    setSelectedTags(new Set());
-    setSelectedStages(new Set());
-  }
+  const hasFilters = selectedTopics.size > 0 || selectedTags.size > 0 || selectedStages.size > 0;
+  function clearAll() { setSelectedTopics(new Set()); setSelectedTags(new Set()); setSelectedStages(new Set()); }
 
   const sidebar = (
     <div className="space-y-6">
       {/* Topics */}
       <div>
-        <h3 className="text-xs font-medium text-text-muted uppercase tracking-wider mb-3">
+        <h3
+          className="text-xs font-bold uppercase tracking-wider mb-3"
+          style={{ color: "var(--color-text-muted)" }}
+        >
           Topics
         </h3>
         <div className="space-y-2">
@@ -103,9 +65,13 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
                 type="checkbox"
                 checked={selectedTopics.has(t)}
                 onChange={() => toggleTopic(t)}
-                className={`rounded border-border ${topicCheckColor[t]}`}
+                className="rounded border-2"
+                style={{ borderColor: "var(--color-border)", accentColor: "var(--color-text-primary)" }}
               />
-              <span className="text-sm text-text-secondary group-hover:text-text-primary transition-colors">
+              <span
+                className="text-sm transition-colors"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
                 {TOPIC_LABELS[t]}
               </span>
             </label>
@@ -115,7 +81,10 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
 
       {/* Maturity */}
       <div>
-        <h3 className="text-xs font-medium text-text-muted uppercase tracking-wider mb-3">
+        <h3
+          className="text-xs font-bold uppercase tracking-wider mb-3"
+          style={{ color: "var(--color-text-muted)" }}
+        >
           Maturity
         </h3>
         <div className="space-y-2">
@@ -125,9 +94,13 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
                 type="checkbox"
                 checked={selectedStages.has(s)}
                 onChange={() => toggleStage(s)}
-                className="rounded border-border"
+                className="rounded border-2"
+                style={{ borderColor: "var(--color-border)", accentColor: "var(--color-text-primary)" }}
               />
-              <span className="text-sm text-text-secondary group-hover:text-text-primary transition-colors">
+              <span
+                className="text-sm transition-colors"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
                 {STAGE_META[s].emoji} {STAGE_META[s].label}
               </span>
             </label>
@@ -137,7 +110,10 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
 
       {/* Tags */}
       <div>
-        <h3 className="text-xs font-medium text-text-muted uppercase tracking-wider mb-3">
+        <h3
+          className="text-xs font-bold uppercase tracking-wider mb-3"
+          style={{ color: "var(--color-text-muted)" }}
+        >
           Tags
         </h3>
         <input
@@ -145,7 +121,12 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
           value={tagSearch}
           onChange={(e) => setTagSearch(e.target.value)}
           placeholder="Filter tags..."
-          className="w-full px-3 py-1.5 bg-background border border-border rounded text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-border-hover mb-3"
+          className="w-full px-3 py-1.5 rounded text-sm focus:outline-none mb-3 border-2"
+          style={{
+            background: "var(--color-background)",
+            borderColor: "var(--color-border)",
+            color: "var(--color-text-primary)",
+          }}
         />
         <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto">
           {filteredTags.map((t) => (
@@ -164,7 +145,8 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
         <button
           type="button"
           onClick={clearAll}
-          className="text-sm text-text-muted hover:text-text-primary transition-colors"
+          className="text-sm transition-colors"
+          style={{ color: "var(--color-text-muted)" }}
         >
           Clear all filters
         </button>
@@ -178,7 +160,8 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
       <button
         type="button"
         onClick={() => setShowFilters(!showFilters)}
-        className="md:hidden mb-4 flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
+        className="md:hidden mb-4 flex items-center gap-2 text-sm transition-colors"
+        style={{ color: "var(--color-text-secondary)" }}
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -186,22 +169,21 @@ export default function FilterPanel({ notes, allTags, children }: Props) {
         Filters {hasFilters && `(${selectedTopics.size + selectedTags.size + selectedStages.size})`}
       </button>
 
-      {/* Mobile filter panel */}
       {showFilters && (
-        <div className="md:hidden mb-6 p-4 bg-surface border border-border rounded-lg">
+        <div
+          className="md:hidden mb-6 p-4 rounded-lg border-2"
+          style={{ background: "var(--color-surface)", borderColor: "var(--color-border)" }}
+        >
           {sidebar}
         </div>
       )}
 
       <div className="flex gap-8">
-        {/* Desktop sidebar */}
         <aside className="hidden md:block w-56 shrink-0">
           <div className="sticky top-20">{sidebar}</div>
         </aside>
-
-        {/* Main content */}
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-text-muted mb-4">
+          <p className="text-sm mb-4" style={{ color: "var(--color-text-muted)" }}>
             {filtered.length} {filtered.length === 1 ? "note" : "notes"}
             {hasFilters && " matching filters"}
           </p>

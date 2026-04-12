@@ -15,16 +15,27 @@ export default function TagPill({
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs border transition-colors ${
+      className={`inline-flex items-center gap-1 rounded px-2 py-1 text-xs border-2 transition-colors ${onClick ? "cursor-pointer" : "cursor-default"}`}
+      style={
         selected
-          ? "border-text-primary bg-text-primary/10 text-text-primary"
-          : "border-border bg-surface text-text-secondary hover:border-border-hover hover:text-text-primary"
-      } ${onClick ? "cursor-pointer" : "cursor-default"}`}
+          ? {
+              background: "var(--color-text-primary)",
+              borderColor: "var(--color-text-primary)",
+              color: "var(--color-surface)",
+            }
+          : {
+              background: "var(--color-surface)",
+              borderColor: "var(--color-border)",
+              color: "var(--color-text-secondary)",
+            }
+      }
     >
-      <span className="text-text-muted">#</span>
+      <span style={{ color: "var(--color-text-faint)" }}>#</span>
       {tag}
       {count !== undefined && (
-        <span className="text-text-muted ml-0.5">({count})</span>
+        <span style={{ color: "var(--color-text-faint)" }} className="ml-0.5">
+          ({count})
+        </span>
       )}
     </button>
   );

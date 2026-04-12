@@ -143,7 +143,15 @@ function buildDraft(newNotes, updatedNotes, today) {
   return lines.join("\n");
 }
 
-function updateChangelog(newNotes, updatedNotes, today) {
+function getLastChangelogDate(raw) {
+  // Find the most recent ## YYYY-MM-DD heading already in the changelog
+  const matches = raw.match(/^## (\d{4}-\d{2}-\d{2})/gm);
+  if (!matches || matches.length === 0) return null;
+  const dates = matches.map((m) => m.replace("## ", "")).sort();
+  return dates[dates.length - 1];
+}
+
+function updateChangelog(allNewNotes, allUpdatedNotes, today) {
   if (!fs.existsSync(CHANGELOG_FILE)) return;
 
   const raw = fs.readFileSync(CHANGELOG_FILE, "utf-8");
@@ -153,6 +161,15 @@ function updateChangelog(newNotes, updatedNotes, today) {
     console.log(`  Changelog already has an entry for ${today}, skipping.`);
     return;
   }
+
+  // Only include notes published/updated AFTER the last changelog date
+  const lastChangelogDate = getLastChangelogDate(raw);
+  const newNotes = lastChangelogDate
+    ? allNewNotes.filter((n) => n.date > lastChangelogDate)
+    : allNewNotes;
+  const updatedNotes = lastChangelogDate
+    ? allUpdatedNotes.filter((n) => (n.updated || "") > lastChangelogDate)
+    : allUpdatedNotes;
 
   const bullets = [];
 

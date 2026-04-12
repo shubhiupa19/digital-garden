@@ -1,30 +1,52 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #0a0f1e;
-  --color-surface: #111827;
-  --color-surface-hover: #1a2236;
-  --color-border: #1e293b;
-  --color-border-hover: #334155;
-  --color-text-primary: #e5e7eb;
-  --color-text-secondary: #9ca3af;
-  --color-text-muted: #6b7280;
+  /* === LIGHT CREAM PALETTE === */
+  --color-background: #F7F2EA;
+  --color-surface: #FDFAF5;
+  --color-surface-hover: #F0EAD6;
+  --color-border: #EBE3D4;
+  --color-border-hover: #C9BFB0;
+  --color-parchment: #EBE3D4;
+  --color-checker-1: #DDD5C5;
+  --color-checker-2: #EDE7DA;
 
-  /* Topic colors — one variable per topic.
-     When adding a new topic in src/types/content.ts, add a matching
-     --color-topic-<key> variable here or it won't render correctly. */
-  --color-topic-crypto: #22d3ee;
-  --color-topic-psychology: #a78bfa;
-  --color-topic-philosophy: #fbbf24;
-  --color-topic-technology: #34d399;
-  --color-topic-history: #f97316;
-  --color-topic-self-growth: #f472b6;
-  --color-topic-uncategorized: #9ca3af;
+  /* Ink / text */
+  --color-text-primary: #1E1B18;
+  --color-text-secondary: #4A453F;
+  --color-text-muted: #7A746C;
+  --color-text-faint: #A8A19A;
 
-  /* Maturity colors */
-  --color-stage-seedling: #86efac;
-  --color-stage-budding: #fde047;
-  --color-stage-evergreen: #34d399;
+  /* Topic colors */
+  --color-topic-crypto: #BE8F2A;
+  --color-topic-psychology: #B05A35;
+  --color-topic-philosophy: #7E5F94;
+  --color-topic-technology: #4E889A;
+  --color-topic-history: #5C7040;
+  --color-topic-self-growth: #5C7040;
+  --color-topic-uncategorized: #7A746C;
+
+  /* Maturity stage colors */
+  --color-stage-seedling: #5C7040;
+  --color-stage-budding: #BE8F2A;
+  --color-stage-evergreen: #4E889A;
+
+  /* Named palette */
+  --color-olive: #5C7040;
+  --color-olive-light: #C5D4AA;
+  --color-olive-bg: #E8EFD9;
+  --color-rust: #B05A35;
+  --color-rust-light: #E8B8A0;
+  --color-rust-bg: #FBE8DC;
+  --color-mauve: #7E5F94;
+  --color-mauve-light: #C9B4D8;
+  --color-mauve-bg: #EDE4F4;
+  --color-mustard: #BE8F2A;
+  --color-mustard-light: #EEDD8A;
+  --color-mustard-bg: #FBF3D8;
+  --color-sky: #4E889A;
+  --color-sky-light: #A8CCD8;
+  --color-sky-bg: #DCF0F5;
 
   --font-sans: var(--font-body), system-ui, sans-serif;
   --font-serif: var(--font-display), Georgia, serif;
@@ -40,22 +62,90 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-background); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-border-hover); }
+
+/* ============ CHECKER STRIP ============ */
+.checker-strip {
+  height: 12px;
+  background-image: repeating-conic-gradient(var(--color-checker-1) 0% 25%, var(--color-checker-2) 0% 50%);
+  background-size: 12px 12px;
 }
-::-webkit-scrollbar-track {
-  background: var(--color-background);
+.checker-strip.olive {
+  background-image: repeating-conic-gradient(var(--color-olive-light) 0% 25%, var(--color-olive-bg) 0% 50%);
+  background-size: 12px 12px;
 }
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 3px;
+.checker-strip.rust {
+  background-image: repeating-conic-gradient(var(--color-rust-light) 0% 25%, var(--color-rust-bg) 0% 50%);
+  background-size: 12px 12px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-border-hover);
+.checker-strip.mauve {
+  background-image: repeating-conic-gradient(var(--color-mauve-light) 0% 25%, var(--color-mauve-bg) 0% 50%);
+  background-size: 12px 12px;
 }
 
-/* Prose styling for MDX content */
+/* ============ WASHI TAPE BADGE ============ */
+.washi {
+  display: inline-block;
+  padding: 4px 20px;
+  font-family: var(--font-body), 'Libre Franklin', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 4px;
+}
+.washi.olive  { background: var(--color-olive-light);   color: var(--color-olive); }
+.washi.rust   { background: var(--color-rust-light);    color: var(--color-rust); }
+.washi.mauve  { background: var(--color-mauve-light);   color: var(--color-mauve); }
+.washi.mustard{ background: var(--color-mustard-light); color: var(--color-mustard); }
+.washi.sky    { background: var(--color-sky-light);     color: var(--color-sky); }
+
+/* ============ STAMP BADGE ============ */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  padding: 5px 12px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slide-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in  { animation: fade-in  0.3s ease-in; }
+.animate-slide-up { animation: slide-up 0.4s ease-out; }
+
+/* Intersection-observer reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============ PROSE (MDX content) ============ */
 .prose {
   color: var(--color-text-primary);
   font-family: var(--font-body), 'Libre Franklin', system-ui, sans-serif;
@@ -63,22 +153,18 @@ body {
   max-width: 68ch;
   font-size: 1.05rem;
 }
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4 {
+.prose h1, .prose h2, .prose h3, .prose h4 {
   color: var(--color-text-primary);
-  font-family: var(--font-display), 'Fraunces', Georgia, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-weight: 500;
-  letter-spacing: -0.01em;
 }
-.prose h1 { font-size: 2rem; margin-top: 2.5rem; margin-bottom: 1rem; }
+.prose h1 { font-size: 2rem;   margin-top: 2.5rem;  margin-bottom: 1rem; }
 .prose h2 { font-size: 1.4rem; margin-top: 2.25rem; margin-bottom: 0.75rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; }
-.prose h3 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-.prose p { margin-bottom: 1.35rem; color: var(--color-text-secondary); }
-.prose a { color: var(--color-topic-crypto); text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
-.prose a:hover { text-decoration-style: solid; opacity: 0.9; }
-.prose em { color: var(--color-text-primary); }
+.prose h3 { font-size: 1.2rem; margin-top: 1.5rem;  margin-bottom: 0.5rem; }
+.prose p  { margin-bottom: 1.35rem; color: var(--color-text-secondary); }
+.prose a  { color: var(--color-olive); text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+.prose a:hover { text-decoration-style: solid; }
+.prose em     { color: var(--color-text-primary); }
 .prose strong { color: var(--color-text-primary); font-weight: 600; }
 .prose ul { list-style-type: disc; }
 .prose ol { list-style-type: decimal; }
@@ -94,11 +180,12 @@ body {
 }
 .prose code {
   background: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.825em;
-  font-family: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
-  color: var(--color-topic-crypto);
+  font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
+  color: var(--color-olive);
 }
 .prose pre {
   background: var(--color-surface);
@@ -108,32 +195,73 @@ body {
   overflow-x: auto;
   margin: 1.75rem 0;
 }
-.prose pre code {
-  background: none;
-  padding: 0;
+.prose pre code { background: none; padding: 0; border: none; color: var(--color-text-primary); }
+.prose hr  { border-color: var(--color-border); margin: 2.5rem 0; }
+.prose img { border-radius: 8px; margin: 1.75rem 0; }
+
+/* ============ REUSABLE INTERACTIVE CLASSES ============ */
+
+/* Bordered button / link (ink border, hover fills bg) */
+.garden-btn {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 7px 16px;
+  border: 2px solid var(--color-checker-1);
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.garden-btn:hover {
+  border-color: var(--color-text-primary);
   color: var(--color-text-primary);
-}
-.prose hr {
-  border-color: var(--color-border);
-  margin: 2.5rem 0;
-}
-.prose img {
-  border-radius: 8px;
-  margin: 1.75rem 0;
+  box-shadow: 3px 3px 0 var(--color-border);
 }
 
-/* Animations */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Card hover — border darkens */
+.card-hover {
+  border: 2px solid var(--color-border);
+  transition: border-color 0.2s ease;
 }
-@keyframes slide-up {
-  from { transform: translateY(12px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.card-hover:hover {
+  border-color: var(--color-text-primary);
 }
-.animate-fade-in {
-  animation: fade-in 0.3s ease-in;
+
+/* Question card */
+.q-card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-text-primary);
+  border-radius: 10px;
+  padding: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.animate-slide-up {
-  animation: slide-up 0.4s ease-out;
+.q-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--color-parchment);
+}
+
+/* Dark CTA button (ink bg on hover) */
+.garden-cta {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 24px;
+  border: 2px solid var(--color-text-primary);
+  border-radius: 4px;
+  color: var(--color-text-primary);
+  background: transparent;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.garden-cta:hover {
+  background: var(--color-text-primary);
+  color: var(--color-surface);
+  box-shadow: 3px 3px 0 var(--color-olive);
 }

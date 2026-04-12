@@ -1,23 +1,34 @@
 import type { Topic } from "@/types/content";
 import { TOPIC_LABELS } from "@/types/content";
 
-// Tailwind class strings must be complete literals — Tailwind can't detect
-// dynamically constructed strings like `bg-topic-${topic}/10`.
-// If you add a new topic in types/content.ts, add its style entry here too.
-const topicStyles: Record<Topic, string> = {
-  crypto: "bg-topic-crypto/10 text-topic-crypto",
-  psychology: "bg-topic-psychology/10 text-topic-psychology",
-  philosophy: "bg-topic-philosophy/10 text-topic-philosophy",
-  technology: "bg-topic-technology/10 text-topic-technology",
-  history: "bg-topic-history/10 text-topic-history",
-  "self-growth": "bg-topic-self-growth/10 text-topic-self-growth",
-  uncategorized: "bg-topic-uncategorized/10 text-topic-uncategorized",
+// Background and text colors per topic for washi-tape style badges
+const topicStyles: Record<Topic, { bg: string; color: string }> = {
+  crypto:         { bg: "var(--color-mustard-light)", color: "var(--color-mustard)" },
+  psychology:     { bg: "var(--color-rust-light)",    color: "var(--color-rust)" },
+  philosophy:     { bg: "var(--color-mauve-light)",   color: "var(--color-mauve)" },
+  technology:     { bg: "var(--color-sky-light)",     color: "var(--color-sky)" },
+  history:        { bg: "var(--color-olive-light)",   color: "var(--color-olive)" },
+  "self-growth":  { bg: "var(--color-olive-light)",   color: "var(--color-olive)" },
+  uncategorized:  { bg: "var(--color-checker-2)",     color: "var(--color-text-muted)" },
+};
+
+// Solid accent color per topic (for the card top strip)
+export const topicStripColor: Record<Topic, string> = {
+  crypto:        "var(--color-mustard)",
+  psychology:    "var(--color-rust)",
+  philosophy:    "var(--color-mauve)",
+  technology:    "var(--color-sky)",
+  history:       "var(--color-olive)",
+  "self-growth": "var(--color-olive)",
+  uncategorized: "var(--color-text-faint)",
 };
 
 export default function TopicPill({ topic }: { topic: Topic }) {
+  const { bg, color } = topicStyles[topic];
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${topicStyles[topic]}`}
+      className="inline-block text-xs font-bold uppercase tracking-wider px-3 py-0.5 rounded"
+      style={{ background: bg, color }}
     >
       {TOPIC_LABELS[topic]}
     </span>

@@ -14,9 +14,14 @@ export default async function TagsPage() {
   const notesBySlug = new Map(notes.map((n) => [n.slug, n]));
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-      <h1 className="text-3xl font-bold text-text-primary mb-2">Tags</h1>
-      <p className="text-text-secondary mb-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-12 py-12">
+      <h1
+        className="font-serif font-medium italic mb-2"
+        style={{ fontSize: "2.2rem", color: "var(--color-text-primary)" }}
+      >
+        Tags
+      </h1>
+      <p className="mb-10" style={{ color: "var(--color-text-secondary)" }}>
         All topics and themes across the garden. {tags.length} tags total.
       </p>
 
@@ -24,13 +29,14 @@ export default async function TagsPage() {
         {tags.map((tagData) => (
           <div
             key={tagData.tag}
-            className="bg-surface border border-border rounded-lg p-5 hover:border-border-hover transition-colors"
+            className="card-hover rounded-lg p-5"
+            style={{ background: "var(--color-surface)", borderRadius: "10px" }}
           >
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold text-text-primary">
+              <h2 className="font-mono font-medium" style={{ color: "var(--color-text-primary)" }}>
                 #{tagData.tag}
               </h2>
-              <span className="text-sm text-text-muted">
+              <span className="font-mono text-xs" style={{ color: "var(--color-text-faint)" }}>
                 {tagData.count} {tagData.count === 1 ? "note" : "notes"}
               </span>
             </div>
@@ -42,14 +48,15 @@ export default async function TagsPage() {
                   <Link
                     key={slug}
                     href={`/notes/${slug}`}
-                    className="block text-sm text-text-secondary hover:text-text-primary transition-colors truncate"
+                    className="block text-sm font-serif italic truncate transition-colors hover:underline underline-offset-2"
+                    style={{ color: "var(--color-text-secondary)" }}
                   >
                     {note.frontmatter.title}
                   </Link>
                 );
               })}
               {tagData.notes.length > 5 && (
-                <p className="text-xs text-text-muted">
+                <p className="text-xs" style={{ color: "var(--color-text-faint)" }}>
                   +{tagData.notes.length - 5} more
                 </p>
               )}
@@ -59,7 +66,7 @@ export default async function TagsPage() {
       </div>
 
       {tags.length === 0 && (
-        <p className="text-text-muted text-center py-12">
+        <p className="text-center py-12" style={{ color: "var(--color-text-muted)" }}>
           No tags yet. Add tags to your notes to see them here.
         </p>
       )}

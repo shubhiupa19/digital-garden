@@ -7,7 +7,7 @@
  */
 
 import type { Metadata } from "next";
-import { Libre_Franklin, Fraunces, JetBrains_Mono } from "next/font/google";
+import { Libre_Franklin, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -19,9 +19,10 @@ const libreFranklin = Libre_Franklin({
   subsets: ["latin"],
 });
 
-const fraunces = Fraunces({
+const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-display", // headings and titles (the serif)
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
 });
 
@@ -64,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${libreFranklin.variable} ${fraunces.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${libreFranklin.variable} ${cormorantGaramond.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <Navigation />
         <main className="min-h-screen">{children}</main>

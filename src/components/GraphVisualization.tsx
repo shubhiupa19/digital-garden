@@ -4,13 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { GraphData, Topic } from "@/types/content";
 
 const TOPIC_HEX: Record<Topic, string> = {
-  crypto: "#22d3ee",
-  psychology: "#a78bfa",
-  philosophy: "#fbbf24",
-  technology: "#34d399",
-  history: "#f97316",
-  "self-growth": "#f472b6",
-  uncategorized: "#9ca3af",
+  crypto:        "#BE8F2A",
+  psychology:    "#B05A35",
+  philosophy:    "#7E5F94",
+  technology:    "#4E889A",
+  history:       "#5C7040",
+  "self-growth": "#5C7040",
+  uncategorized: "#7A746C",
 };
 
 interface Props {
@@ -76,7 +76,7 @@ export default function GraphVisualization({
         ctx.font = `${fontSize}px sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
-        ctx.fillStyle = "#e5e7eb";
+        ctx.fillStyle = "#1E1B18";
         ctx.fillText(label, node.x!, node.y! + size + 2);
       }
     },
@@ -111,7 +111,7 @@ export default function GraphVisualization({
         graphData={graphData}
         width={dimensions.w}
         height={dimensions.h}
-        backgroundColor="#0a0f1e"
+        backgroundColor="#FDFAF5"
         nodeCanvasObject={paintNode}
         nodePointerAreaPaint={(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -125,7 +125,7 @@ export default function GraphVisualization({
           ctx.fillStyle = color;
           ctx.fill();
         }}
-        linkColor={() => "#1e293b"}
+        linkColor={() => "#C9BFB0"}
         linkWidth={1}
         onNodeClick={(node: { id?: string }) => {
           if (onNodeClick && node.id) onNodeClick(node.id as string);

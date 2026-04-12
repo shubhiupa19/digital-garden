@@ -3,44 +3,15 @@
 
 ## 2026-04-11
 
-- Published new note: "Context of the Babri Masjid Demolition"
-- Published new note: "You Don't Have to Understand Crypto to Believe In It"
-- Published new note: "grief is unexceptional"
-- Published new note: "Four Cities in Four Years"
 - Published new note: "The Kashmiri Pandit Exodus"
-
-## 2026-04-10
-
-- Published new note: "Context of the Babri Masjid Demolition"
-- Published new note: "You Don't Have to Understand Crypto to Believe In It"
-- Published new note: "grief is unexceptional"
-- Published new note: "Four Cities in Four Years"
-
-## 2026-04-09
-
-- Published new note: "Context of the Babri Masjid Demolition"
-- Published new note: "You Don't Have to Understand Crypto to Believe In It"
-- Published new note: "grief is unexceptional"
-- Published new note: "Four Cities in Four Years"
-
-## 2026-04-08
-
-- Published new note: "Context of the Babri Masjid Demolition"
-- Published new note: "You Don't Have to Understand Crypto to Believe In It"
-- Published new note: "grief is unexceptional"
-- Published new note: "Four Cities in Four Years"
 
 ## 2026-04-07
 
+- Published new note: "Four Cities in Four Years"
+
+## 2026-04-01
+
 - Published new note: "Context of the Babri Masjid Demolition"
-- Published new note: "You Don't Have to Understand Crypto to Believe In It"
-- Published new note: "grief is unexceptional"
-
-## 2026-04-06
-
-- Published new note: "Context of the Babri Masjid "
-- Published new note: "You Don't Have to Understand Crypto to Believe In It"
-- Published new note: "grief is unexceptional"
 
 ## 2026-02-24
 

@@ -29,11 +29,17 @@ export default async function QuestionsPage() {
   });
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-      <h1 className="text-3xl font-bold text-text-primary mb-2">
-        Still Figuring Out
-      </h1>
-      <p className="text-text-secondary mb-10">
+    <div className="max-w-3xl mx-auto px-4 sm:px-12 py-12">
+      <div className="flex items-center gap-4 mb-3">
+        <h1
+          className="font-serif font-medium italic"
+          style={{ fontSize: "2.2rem", color: "var(--color-text-primary)" }}
+        >
+          Still Figuring Out
+        </h1>
+        <span className="washi mauve">Open Questions</span>
+      </div>
+      <p className="mb-10" style={{ color: "var(--color-text-secondary)" }}>
         Questions I&apos;m pondering right now.
       </p>
       <div className="prose">{content}</div>

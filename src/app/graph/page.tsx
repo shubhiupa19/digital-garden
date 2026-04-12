@@ -18,37 +18,33 @@ export default async function GraphPage() {
 
       {/* Legend — note: Tailwind requires full class strings, so these can't be
            generated dynamically. If you add a topic, add a row here too. */}
-      <div className="absolute top-4 right-4 bg-surface/90 backdrop-blur-sm border border-border rounded-lg p-4 text-xs space-y-2 z-10">
-        <p className="text-text-muted font-medium uppercase tracking-wider mb-2">Topics</p>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-topic-crypto" />
-          <span className="text-text-secondary">Crypto</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-topic-psychology" />
-          <span className="text-text-secondary">Psychology</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-topic-philosophy" />
-          <span className="text-text-secondary">Philosophy</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-topic-technology" />
-          <span className="text-text-secondary">Technology</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-topic-history" />
-          <span className="text-text-secondary">History</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-topic-self-growth" />
-          <span className="text-text-secondary">Self-growth</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-topic-uncategorized" />
-          <span className="text-text-secondary">Uncategorized</span>
-        </div>
-        <p className="text-text-muted mt-3 pt-2 border-t border-border">
+      <div
+        className="absolute top-4 right-4 rounded-lg p-4 text-xs space-y-2 z-10"
+        style={{
+          background: "rgba(253,250,245,0.92)",
+          backdropFilter: "blur(4px)",
+          border: "2px solid var(--color-border)",
+        }}
+      >
+        <p className="font-bold uppercase tracking-wider mb-2" style={{ color: "var(--color-text-muted)" }}>Topics</p>
+        {[
+          { label: "Crypto",        color: "var(--color-mustard)" },
+          { label: "Psychology",    color: "var(--color-rust)" },
+          { label: "Philosophy",    color: "var(--color-mauve)" },
+          { label: "Technology",    color: "var(--color-sky)" },
+          { label: "History",       color: "var(--color-olive)" },
+          { label: "Self-growth",   color: "var(--color-olive)" },
+          { label: "Uncategorized", color: "var(--color-text-faint)" },
+        ].map(({ label, color }) => (
+          <div key={label} className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full" style={{ background: color }} />
+            <span style={{ color: "var(--color-text-secondary)" }}>{label}</span>
+          </div>
+        ))}
+        <p
+          className="mt-3 pt-2"
+          style={{ color: "var(--color-text-muted)", borderTop: "1px solid var(--color-border)" }}
+        >
           Click a node to view the note.
           <br />
           Drag to explore.

@@ -71,7 +71,7 @@ export default async function NotePage({
     : null;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-3xl mx-auto px-4 sm:px-12 py-12">
       <article className="animate-fade-in">
         {/* Header */}
         <header className="mb-8">
@@ -80,19 +80,28 @@ export default async function NotePage({
             <MaturityBadge stage={note.frontmatter.stage} />
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-medium text-text-primary mb-3 tracking-tight font-serif">
+          <h1
+            className="font-serif font-medium italic leading-tight mb-3"
+            style={{
+              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+              color: "var(--color-text-primary)",
+            }}
+          >
             {note.frontmatter.title}
           </h1>
 
-          <div className="flex items-center gap-3 text-sm text-text-muted mb-4">
+          <div
+            className="flex items-center gap-3 text-sm mb-4 font-mono"
+            style={{ color: "var(--color-text-faint)" }}
+          >
             <span>{dateStr}</span>
             {updatedStr && updatedStr !== dateStr && (
               <>
-                <span className="text-text-muted/50">·</span>
+                <span>·</span>
                 <span>Updated {updatedStr}</span>
               </>
             )}
-            <span className="text-text-muted/50">·</span>
+            <span>·</span>
             <span>{note.readingTime}</span>
           </div>
 
@@ -102,7 +111,12 @@ export default async function NotePage({
                 <Link
                   key={tag}
                   href={`/tags?t=${encodeURIComponent(tag)}`}
-                  className="text-xs text-text-muted bg-surface border border-border rounded-md px-2 py-1 hover:border-border-hover hover:text-text-primary transition-colors"
+                  className="font-mono text-xs px-2 py-1 rounded border-2 transition-colors"
+                  style={{
+                    color: "var(--color-text-muted)",
+                    background: "var(--color-surface)",
+                    borderColor: "var(--color-border)",
+                  }}
                 >
                   #{tag}
                 </Link>
@@ -118,10 +132,14 @@ export default async function NotePage({
         <ConnectionsList manual={manual} auto={auto} />
 
         {/* Back link */}
-        <div className="mt-12 pt-6 border-t border-border">
+        <div
+          className="mt-12 pt-6"
+          style={{ borderTop: "2px dashed var(--color-border)" }}
+        >
           <Link
             href="/notes"
-            className="text-sm text-text-muted hover:text-text-primary transition-colors"
+            className="text-sm font-bold uppercase tracking-wider transition-colors"
+            style={{ color: "var(--color-text-muted)" }}
           >
             ← Back to all notes
           </Link>

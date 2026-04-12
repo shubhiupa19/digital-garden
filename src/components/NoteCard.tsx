@@ -1,65 +1,94 @@
 import Link from "next/link";
 import type { Note } from "@/types/content";
 import MaturityBadge from "./MaturityBadge";
-import TopicPill from "./TopicPill";
-
-// Tailwind class strings must be written out in full — Tailwind can't detect
-// dynamically constructed strings like `hover:border-topic-${topic}/40`.
-// If you add a new topic in types/content.ts, add its hover class here too.
-const topicBorderHover: Record<string, string> = {
-  crypto: "hover:border-topic-crypto/40",
-  psychology: "hover:border-topic-psychology/40",
-  philosophy: "hover:border-topic-philosophy/40",
-  technology: "hover:border-topic-technology/40",
-  history: "hover:border-topic-history/40",
-  "self-growth": "hover:border-topic-self-growth/40",
-  uncategorized: "hover:border-topic-uncategorized/40",
-};
+import TopicPill, { topicStripColor } from "./TopicPill";
 
 export default function NoteCard({ note }: { note: Note }) {
   const excerpt = note.content
     .replace(/[#*`>\[\]()_~]/g, "")
     .trim()
-    .slice(0, 140);
+    .slice(0, 160);
+
+  const strip = topicStripColor[note.frontmatter.topic];
+  const dateStr = new Date(note.frontmatter.date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 
   return (
     <Link href={`/notes/${note.slug}`} className="block group">
       <article
-        className={`bg-surface border border-border rounded-lg p-5 transition-all duration-200 ${
-          topicBorderHover[note.frontmatter.topic]
-        } hover:bg-surface-hover`}
+        className="flex flex-col overflow-hidden transition-all duration-300"
+        style={{
+          background: "var(--color-surface)",
+          border: "2px solid var(--color-text-primary)",
+          borderRadius: "10px",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+          (e.currentTarget as HTMLElement).style.boxShadow =
+            "4px 4px 0 var(--color-parchment)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+          (e.currentTarget as HTMLElement).style.boxShadow = "none";
+        }}
       >
-        <div className="flex items-start justify-between gap-2 mb-3">
-          <TopicPill topic={note.frontmatter.topic} />
-          <MaturityBadge stage={note.frontmatter.stage} size="sm" />
-        </div>
+        {/* Colored top strip */}
+        <div style={{ height: "6px", background: strip, flexShrink: 0 }} />
 
-        <h3 className="text-lg font-medium text-text-primary mb-2 group-hover:underline underline-offset-2 font-serif">
-          {note.frontmatter.title}
-        </h3>
-
-        <p className="text-sm text-text-muted mb-3 line-clamp-2">{excerpt}</p>
-
-        <div className="flex items-center justify-between">
-          <div className="flex flex-wrap gap-1.5">
-            {note.frontmatter.tags.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className="text-xs text-text-muted bg-background rounded px-1.5 py-0.5"
-              >
-                #{tag}
-              </span>
-            ))}
-            {note.frontmatter.tags.length > 3 && (
-              <span className="text-xs text-text-muted">
-                +{note.frontmatter.tags.length - 3}
-              </span>
-            )}
+        {/* Card body */}
+        <div className="flex flex-col flex-1 p-5">
+          {/* Top row: topic badge + maturity */}
+          <div className="flex items-start justify-between gap-2 mb-3">
+            <TopicPill topic={note.frontmatter.topic} />
+            <MaturityBadge stage={note.frontmatter.stage} size="sm" />
           </div>
-          <div className="text-xs text-text-muted flex items-center gap-2">
-            <span>{new Date(note.frontmatter.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
-            <span className="text-text-muted/50">·</span>
-            <span>{note.readingTime}</span>
+
+          {/* Title */}
+          <h3
+            className="font-serif text-xl font-medium leading-snug mb-2"
+            style={{ color: "var(--color-text-primary)" }}
+          >
+            {note.frontmatter.title}
+          </h3>
+
+          {/* Excerpt */}
+          <p
+            className="text-sm leading-relaxed mb-4 flex-1 line-clamp-3"
+            style={{ color: "var(--color-text-muted)" }}
+          >
+            {excerpt}
+          </p>
+
+          {/* Footer */}
+          <div
+            className="flex items-center justify-between pt-3"
+            style={{ borderTop: "2px dashed var(--color-border)" }}
+          >
+            <div className="flex flex-wrap gap-2">
+              {note.frontmatter.tags.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="font-mono text-xs"
+                  style={{ color: "var(--color-text-faint)" }}
+                >
+                  #{tag}
+                </span>
+              ))}
+              {note.frontmatter.tags.length > 3 && (
+                <span
+                  className="font-mono text-xs"
+                  style={{ color: "var(--color-text-faint)" }}
+                >
+                  +{note.frontmatter.tags.length - 3}
+                </span>
+              )}
+            </div>
+            <span className="font-mono text-xs" style={{ color: "var(--color-text-faint)" }}>
+              {dateStr} · {note.readingTime}
+            </span>
           </div>
         </div>
       </article>
