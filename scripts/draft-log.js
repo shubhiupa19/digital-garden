@@ -51,8 +51,12 @@ function getRecentNotes(sinceDate) {
     if (content.trim() === "Write your thoughts here...") continue;
 
     const slug = file.replace(/\.mdx$/, "");
-    const noteDate = data.date ? String(data.date).slice(0, 10) : null;
-    const updatedDate = data.updated ? String(data.updated).slice(0, 10) : null;
+    const noteDate = data.date
+      ? (data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date).slice(0, 10))
+      : null;
+    const updatedDate = data.updated
+      ? (data.updated instanceof Date ? data.updated.toISOString().slice(0, 10) : String(data.updated).slice(0, 10))
+      : null;
 
     if (!noteDate) continue;
 

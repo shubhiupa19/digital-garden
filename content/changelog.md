@@ -1,14 +1,6 @@
 ---
 ---
 
-## 2026-04-13
-
-- Published new note: "Context of the Babri Masjid Demolition"
-- Published new note: "You Don't Have to Understand Crypto to Believe In It"
-- Published new note: "grief is unexceptional"
-- Published new note: "Four Cities in Four Years"
-- Published new note: "The Kashmiri Pandit Exodus"
-
 ## 2026-04-11
 
 - Published new note: "The Kashmiri Pandit Exodus"

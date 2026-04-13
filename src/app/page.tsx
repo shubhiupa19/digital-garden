@@ -36,8 +36,14 @@ export default async function HomePage() {
   const questions = questionsRaw
     ? questionsRaw
         .split("\n")
-        .filter((l) => l.trim().startsWith("-"))
-        .map((l) => l.replace(/^-\s*/, "").trim())
+        .reduce<string[]>((acc, line) => {
+          if (line.trim().startsWith("-")) {
+            acc.push(line.replace(/^-\s*/, "").trim());
+          } else if (acc.length > 0 && line.trim()) {
+            acc[acc.length - 1] += " " + line.trim();
+          }
+          return acc;
+        }, [])
         .filter(Boolean)
         .slice(0, 4)
     : [];
