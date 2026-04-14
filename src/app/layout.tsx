@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 const libreFranklin = Libre_Franklin({
   variable: "--font-body", // body text
   subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 const cormorantGaramond = Cormorant_Garamond({
