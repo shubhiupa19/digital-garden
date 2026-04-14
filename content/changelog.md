@@ -1,6 +1,10 @@
 ---
 ---
 
+## 2026-04-14
+
+- Published new note: "I Didn't Find "My People" in College"
+
 ## 2026-04-11
 
 - Published new note: "The Kashmiri Pandit Exodus"
