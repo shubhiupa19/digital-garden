@@ -23,7 +23,7 @@
   --color-topic-philosophy: #7E5F94;
   --color-topic-technology: #4E889A;
   --color-topic-history: #5C7040;
-  --color-topic-self-growth: #5C7040;
+  --color-topic-self-growth: #A85C78;
   --color-topic-uncategorized: #7A746C;
 
   /* Maturity stage colors */
@@ -47,6 +47,9 @@
   --color-sky: #4E889A;
   --color-sky-light: #A8CCD8;
   --color-sky-bg: #DCF0F5;
+  --color-rose: #A85C78;
+  --color-rose-light: #D9B0C0;
+  --color-rose-bg: #F5E8EE;
 
   --font-sans: var(--font-body), system-ui, sans-serif;
   --font-serif: var(--font-display), Georgia, serif;

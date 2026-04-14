@@ -8,7 +8,7 @@ const topicStyles: Record<Topic, { bg: string; color: string }> = {
   philosophy:     { bg: "var(--color-mauve-light)",   color: "var(--color-mauve)" },
   technology:     { bg: "var(--color-sky-light)",     color: "var(--color-sky)" },
   history:        { bg: "var(--color-olive-light)",   color: "var(--color-olive)" },
-  "self-growth":  { bg: "var(--color-olive-light)",   color: "var(--color-olive)" },
+  "self-growth":  { bg: "var(--color-rose-light)",    color: "var(--color-rose)" },
   uncategorized:  { bg: "var(--color-checker-2)",     color: "var(--color-text-muted)" },
 };
 
@@ -19,7 +19,7 @@ export const topicStripColor: Record<Topic, string> = {
   philosophy:    "var(--color-mauve)",
   technology:    "var(--color-sky)",
   history:       "var(--color-olive)",
-  "self-growth": "var(--color-olive)",
+  "self-growth": "var(--color-rose)",
   uncategorized: "var(--color-text-faint)",
 };
 

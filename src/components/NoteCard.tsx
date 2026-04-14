@@ -4,10 +4,11 @@ import MaturityBadge from "./MaturityBadge";
 import TopicPill, { topicStripColor } from "./TopicPill";
 
 export default function NoteCard({ note }: { note: Note }) {
-  const excerpt = note.content
-    .replace(/[#*`>\[\]()_~]/g, "")
-    .trim()
-    .slice(0, 160);
+  const rawExcerpt = note.content.replace(/[#*`>\[\]()_~]/g, "").trim();
+  const excerpt =
+    rawExcerpt.length > 160
+      ? rawExcerpt.slice(0, 160).replace(/\s+\S*$/, "") + "..."
+      : rawExcerpt;
 
   const strip = topicStripColor[note.frontmatter.topic];
   const dateStr = new Date(note.frontmatter.date).toLocaleDateString("en-US", {
