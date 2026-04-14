@@ -33,7 +33,7 @@ export default async function GraphPage() {
           { label: "Philosophy",    color: "var(--color-mauve)" },
           { label: "Technology",    color: "var(--color-sky)" },
           { label: "History",       color: "var(--color-olive)" },
-          { label: "Self-growth",   color: "var(--color-olive)" },
+          { label: "Self-growth",   color: "var(--color-rose)" },
           { label: "Uncategorized", color: "var(--color-text-faint)" },
         ].map(({ label, color }) => (
           <div key={label} className="flex items-center gap-2">
