@@ -9,7 +9,7 @@ const TOPIC_HEX: Record<Topic, string> = {
   philosophy:    "#7E5F94",
   technology:    "#4E889A",
   history:       "#5C7040",
-  "self-growth": "#5C7040",
+  "self-growth": "#A85C78",
   uncategorized: "#7A746C",
 };
 
