@@ -6,6 +6,7 @@ import { buildGraphData } from "@/lib/graph";
 import { buildSearchIndex } from "@/lib/search";
 import GraphWrapper from "@/components/GraphWrapper";
 import HomeClient from "@/components/HomeClient";
+import Bookshelf from "@/components/Bookshelf";
 import fs from "fs";
 import path from "path";
 
@@ -190,6 +191,12 @@ export default async function HomePage() {
 
       {/* ── CHECKER ── */}
       <div className="checker-strip mauve" />
+
+      {/* ── BOOKSHELF ── */}
+      <Bookshelf />
+
+      {/* ── CHECKER ── */}
+      <div className="checker-strip" />
 
       {/* ── KNOWLEDGE GRAPH ── */}
       {graphData.nodes.length > 0 && (
