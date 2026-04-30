@@ -1,6 +1,10 @@
 ---
 ---
 
+## 2026-04-30
+
+- Published new note: "Why we become who others expect us to be — and why escaping it costs more than it should"
+
 ## 2026-04-14
 
 - Published new note: "I Didn't Find "My People" in College"
