@@ -12,58 +12,34 @@ type Book = {
 
 const BOOKS: Book[] = [
   {
-    title: "The Brothers Karamazov",
-    author: "Dostoevsky",
-    isbn: "9780374528379",
+    title: "The Midnight Library",
+    author: "Matt Haig",
+    isbn: "9780525559474",
     gradient: "linear-gradient(135deg, #5C4033, #8B6914)",
-    note: "The book that changed how I think about love, faith, and what it means to show up for people. Alyosha's \"active love\" is the closest thing I have to a life philosophy.",
   },
   {
     title: "Man's Search for Meaning",
     author: "Viktor Frankl",
     isbn: "9780807014295",
     gradient: "linear-gradient(135deg, #2C3E50, #4A6FA5)",
-    note: "Read this during a really hard time. Frankl's idea that we can't avoid suffering but can choose how we respond to it genuinely rewired something in my brain.",
   },
   {
-    title: "Fear and Trembling",
-    author: "Kierkegaard",
-    isbn: "9780140444490",
+    title: "And the Mountains Echoed",
+    author: "Khaled Hosseini",
+    isbn: "9781594632389",
     gradient: "linear-gradient(135deg, #6B3A5D, #A0527E)",
-    note: "Kierkegaard's leap of faith as devotion, not irrationality. This book made me rethink what commitment actually looks like — in faith, in love, in everything.",
   },
   {
-    title: "Crime and Punishment",
-    author: "Dostoevsky",
-    isbn: "9780486415871",
+    title: "East of Eden",
+    author: "John Steinbeck",
+    isbn: "9780140186390",
     gradient: "linear-gradient(135deg, #3D5A3E, #6B8F6B)",
-    note: "Suffering as transformation, not punishment. Raskolnikov's journey from total isolation to genuine human connection is the most honest arc in all of literature.",
   },
   {
-    title: "The Idiot",
-    author: "Dostoevsky",
-    isbn: "9780140447927",
+    title: "Everything I Know About Love",
+    author: "Dolly Alderton",
+    isbn: "9780062968791",
     gradient: "linear-gradient(135deg, #8B4513, #CD853F)",
-  },
-  {
-    title: "Notes from Underground",
-    author: "Dostoevsky",
-    isbn: "9780679734529",
-    gradient: "linear-gradient(135deg, #4A3728, #7A5C48)",
-  },
-  {
-    title: "The Stranger",
-    author: "Camus",
-    isbn: "9780679720201",
-    gradient: "linear-gradient(135deg, #2E4057, #5D7EA0)",
-    note: "The book that first made me realize philosophy could feel urgent. Meursault's detachment is unsettling because it's more relatable than we want to admit.",
-  },
-  {
-    title: "Devotions",
-    author: "Mary Oliver",
-    isbn: "9780807068861",
-    gradient: "linear-gradient(135deg, #6B4226, #B87333)",
-    note: "Mary Oliver's poetry is medicine. \"Tell me, what is it you plan to do with your one wild and precious life?\" — I come back to that line constantly.",
   },
 ];
 
@@ -74,7 +50,9 @@ export default function Bookshelf() {
   const [tapped, setTapped] = useState<number | null>(null);
 
   function openTooltip(e: React.MouseEvent | React.TouchEvent, note: string) {
-    const cover = (e.currentTarget as HTMLElement).querySelector(".book-cover") as HTMLElement;
+    const cover = (e.currentTarget as HTMLElement).querySelector(
+      ".book-cover",
+    ) as HTMLElement;
     if (!cover) return;
     const rect = cover.getBoundingClientRect();
     setTooltip({ note, x: rect.left + rect.width / 2, y: rect.top });
@@ -97,7 +75,9 @@ export default function Bookshelf() {
           <div
             key={book.title}
             className="book-item"
-            onMouseEnter={book.note ? (e) => openTooltip(e, book.note!) : undefined}
+            onMouseEnter={
+              book.note ? (e) => openTooltip(e, book.note!) : undefined
+            }
             onMouseLeave={() => setTooltip(null)}
             onClick={(e) => {
               if (!book.note) return;
@@ -111,15 +91,17 @@ export default function Bookshelf() {
             }}
           >
             {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-            <div
-              className="book-cover"
-              style={{ background: book.gradient }}
-            >
+            <div className="book-cover" style={{ background: book.gradient }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
                 alt={book.title}
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
                 }}
