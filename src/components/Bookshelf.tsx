@@ -38,7 +38,7 @@ const BOOKS: Book[] = [
   {
     title: "Everything I Know About Love",
     author: "Dolly Alderton",
-    isbn: "9780062968791",
+    isbn: "9780241322710",
     gradient: "linear-gradient(135deg, #8B4513, #CD853F)",
   },
 ];
