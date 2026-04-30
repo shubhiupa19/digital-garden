@@ -1,1 +1,6 @@
 node scripts/draft-log.js
+
+if ! git diff --quiet content/changelog.md; then
+  git add content/changelog.md
+  git commit -m "update changelog"
+fi
