@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "new": "node scripts/new-note.js",
+    "stage": "node scripts/set-stage.js",
     "new-book": "node scripts/new-book.js",
     "draft-log": "node scripts/draft-log.js",
     "format": "prettier --write content/**/*.mdx content/**/*.md",
