@@ -1,6 +1,10 @@
 ---
 ---
 
+## 2026-07-24
+
+- Published new note: "another great thing will happen"
+
 ## 2026-04-30
 
 - Published new note: "Why we become who others expect us to be — and why escaping it costs more than it should"
